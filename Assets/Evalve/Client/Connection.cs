@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine.Networking;
 
-namespace Evalve.Api
+namespace Evalve.Client
 {
     public class Connection
     {

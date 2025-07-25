@@ -1,5 +1,4 @@
-using System;
-using Evalve.Api;
+using Evalve.Client;
 using UnityEngine;
 
 namespace Evalve

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-namespace Evalve.Api
+namespace Evalve.Client
 {
     public class SceneObject
     {

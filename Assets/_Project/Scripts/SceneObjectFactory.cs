@@ -1,7 +1,7 @@
 using System;
-using Evalve.Api;
+using Evalve.Client;
 using UnityEngine;
-using Pose = Evalve.Api.Pose;
+using Pose = Evalve.Client.Pose;
 
 namespace Evalve
 {

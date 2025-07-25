@@ -2,7 +2,8 @@
     "name": "Evalve",
     "rootNamespace": "Evalve",
     "references": [
-        "GUID:2a650fc607d30a1c1b2592254e1b5893"
+        "GUID:2a650fc607d30a1c1b2592254e1b5893",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
