@@ -1,0 +1,16 @@
+{
+    "name": "Evalve",
+    "rootNamespace": "Evalve",
+    "references": [
+        "GUID:2a650fc607d30a1c1b2592254e1b5893"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
