@@ -106,5 +106,15 @@ namespace Evalve.Client
         {
             return new Vector3(source.X, source.Y, source.Z);
         }
+
+        public static Vector ToVector(this Vector3 source)
+        {
+            return new Vector
+            {
+                X = source.x,
+                Y = source.y,
+                Z = source.z
+            };
+        }
     }
 }

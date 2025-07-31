@@ -9,6 +9,8 @@ namespace Evalve
     public class Setup : MonoBehaviour
     {
         [SerializeField] private SceneObjectFactory _sceneObjectFactory;
+        [SerializeField] private string _assetId;
+        [SerializeField] private string _nameFilter;
 
         private async void Start()
         {
@@ -16,10 +18,10 @@ namespace Evalve
 
             var connection = new Connection(url);
             
-            var assetBundle = await connection.GetAssetBundleAsync("01k1e7bm3kx6gdrb80m346dc2x");
+            var assetBundle = await connection.GetAssetBundleAsync(_assetId);
             var assetNames = assetBundle.Elements
                 .Select(element => element.Name)
-                .Where(elementName => elementName.Contains("Option 03"))
+                .Where(elementName => elementName.Contains(_nameFilter))
                 .ToArray();
             
             await FileDownloader.DownloadFileAsync(assetBundle.Url, assetBundle.Id);
