@@ -19,6 +19,8 @@ namespace Evalve
                 _sceneObjectPrefab,
                 data.Transform.Position.ToVector3(),
                 Quaternion.Euler(data.Transform.Rotation.ToVector3()));
+
+            obj.name = $"sceneObject_{data.Name}";
             
             foreach (var property in data.Properties)
             {

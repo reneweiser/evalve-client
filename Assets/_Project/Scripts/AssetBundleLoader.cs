@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Evalve
 {
-    public class AssetBundleLoader : MonoBehaviour
+    public class AssetBundleLoader
     {
-        public async Task LoadAssetsAsync(string bundlePath, string[] assetNames)
+        public static async Task LoadAssetsAsync(string bundlePath, string[] assetNames)
         {
             var bundle = await LoadAssetBundleAsync(bundlePath);
     
@@ -22,9 +22,9 @@ namespace Evalve
             bundle.Unload(false);
         }
 
-        private async Task<AssetBundle> LoadAssetBundleAsync(string url)
+        private static async Task<AssetBundle> LoadAssetBundleAsync(string url)
         {
-            var bundleRequest = AssetBundle.LoadFromFileAsync(url);
+            var bundleRequest = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, url));
     
             while (!bundleRequest.isDone)
             {
@@ -38,7 +38,7 @@ namespace Evalve
             return null;
         }
 
-        private async Task LoadAssetFromBundleAsync(AssetBundle bundle, string assetName)
+        private static async Task LoadAssetFromBundleAsync(AssetBundle bundle, string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
             {
@@ -60,35 +60,8 @@ namespace Evalve
             }
 
             var loadedAsset = assetRequest.asset as GameObject;
-            Instantiate(loadedAsset);
+            Object.Instantiate(loadedAsset);
             Debug.Log($"Successfully loaded and instantiated {assetName}");
         } 
-        
-        private async void Start()
-        {
-            var names = new[]
-            {
-                "Assets/MLH/MLH_E - Urban 01 Planting Red.dae",
-                "Assets/MLH/MLH_E - Scen 01 Furniture F1+2.dae",
-                "Assets/MLH/MLH_E - Arch 01 no Doors.dae",
-                "Assets/MLH/MLH_E - Scen 01 Entrouage.dae",
-                "Assets/MLH/MLH_E - Scen 01 Furniture F3.dae",
-                "Assets/MLH/MLH_E - Urban 01 Entrouage.dae",
-                "Assets/MLH/MLH_E - Scen 01 Planting.dae",
-                "Assets/MLH/MLH_E - Urban 01.dae",
-                "Assets/MLH/MLH_E - Urban 01 Planting.dae",
-                "Assets/MLH/MLH_E - Arch 01 no Topo.dae",
-                "Assets/MLH/MLH_E - Scen 01 Furniture Roof.dae",
-                "Assets/MLH/MLH_E - Arch 01 Door open.dae",
-                "Assets/MLH/MLH_E - Urban 01 TopoBuild.dae",
-                "Assets/MLH/MLH_E - Arch 01 Door Flat closed.dae",
-                "Assets/MLH/MLH_E - Arch 01.dae",
-                "Assets/MLH/MLH_E - Urban 01 Billboard.dae",
-            };
-            
-            var path = Path.Combine(Application.streamingAssetsPath, "mlh");
-            
-            await LoadAssetsAsync(path, names);
-        }
     }
 }

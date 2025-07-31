@@ -34,5 +34,26 @@ namespace Evalve.Client
             
             return JsonConvert.DeserializeObject<List<SceneObject>>(jsonResponse);
         }
+
+        public async Task<AssetBundle> GetAssetBundleAsync(string id)
+        {
+            using var request = UnityWebRequest.Get($"{_baseUrl}/asset-bundles/{id}");
+            
+            var operation = request.SendWebRequest();
+            
+            while (!operation.isDone)
+            {
+                await Task.Yield();
+            }
+
+            if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
+            {
+                throw new System.Exception($"HTTP Error: {request.error}");
+            }
+
+            var jsonResponse = request.downloadHandler.text;
+            
+            return JsonConvert.DeserializeObject<AssetBundle>(jsonResponse);
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,10 +11,40 @@ namespace Evalve
         
         private Vector2 lookInput;
         private float pitch = 0f;
+        
         private void Awake()
         {
             _inputActions["Look"].performed += ctx => lookInput = ctx.ReadValue<Vector2>();
             _inputActions["Look"].canceled += ctx => lookInput = Vector2.zero;
+            _inputActions["EnableLook"].performed += EnableLook;
+            _inputActions["EnableLook"].canceled += DisableLook;
+        }
+
+        private void Start()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _inputActions["Look"].Disable();
+            _inputActions["Move"].Disable();
+            _inputActions["Elevation"].Disable();
+        }
+
+        private void DisableLook(InputAction.CallbackContext ctx)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _inputActions["Look"].Disable();
+            _inputActions["Move"].Disable();
+            _inputActions["Elevation"].Disable();
+        }
+
+        private void EnableLook(InputAction.CallbackContext ctx)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            _inputActions["Look"].Enable();
+            _inputActions["Move"].Enable();
+            _inputActions["Elevation"].Enable();
         }
 
         private void OnEnable()

@@ -11,14 +11,16 @@ namespace Evalve
     
         private Vector2 _movementInput;
         private float _heightInput;
+        private float _sprintCoefficient = 1f;
 
         private void Awake()
         {
-            Cursor.lockState = CursorLockMode.Locked;
             _inputActions["Move"].performed += ctx => _movementInput = ctx.ReadValue<Vector2>();
             _inputActions["Move"].canceled += ctx => _movementInput = Vector2.zero;
             _inputActions["Elevation"].performed += ctx => _heightInput = ctx.ReadValue<float>();
             _inputActions["Elevation"].canceled += ctx => _heightInput = 0.0f;
+            _inputActions["Sprint"].performed += ctx => _sprintCoefficient = 3f;
+            _inputActions["Sprint"].canceled += ctx => _sprintCoefficient = 1f;
         }
 
         private void OnEnable()
@@ -45,7 +47,7 @@ namespace Evalve
                                 + _playerCamera.transform.right * horizontalInput
                                 + transform.up * _heightInput;
         
-            transform.position += moveDirection.normalized * _moveSpeed * Time.deltaTime;
+            transform.position += moveDirection.normalized * _moveSpeed * _sprintCoefficient * Time.deltaTime;
         }
     }
 }
