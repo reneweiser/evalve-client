@@ -18,7 +18,7 @@ namespace Evalve
 
                 if (webRequest.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.LogError($"Download failed: {webRequest.error}");
+                    Logger.Log($"Download failed: {webRequest.error}");
                     return;
                 }
 
@@ -26,11 +26,11 @@ namespace Evalve
 
                 await File.WriteAllBytesAsync(filePath, fileData);
                 
-                Debug.Log($"File successfully downloaded and saved to: {filePath}");
+                Logger.Log($"File successfully downloaded and saved to: {filePath}");
             }
             catch (System.Exception ex)
             {
-                Debug.LogError($"Error downloading file: {ex.Message}");
+                Logger.Log($"Error downloading file: {ex.Message}");
             }
         }
     }

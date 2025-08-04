@@ -1,10 +1,8 @@
-﻿using System;
-using Evalve.SceneObjects;
+﻿using Evalve.SceneObjects;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using SceneObject = Evalve.Panels.SceneObject;
-using SplashScreen = Evalve.States.SplashScreen;
 
 namespace Evalve.Systems
 {
@@ -32,7 +30,7 @@ namespace Evalve.Systems
         }
         private void Start()
         {
-            _uiStateMachine.ChangeState<SplashScreen>();
+            _uiStateMachine.ChangeState<States.Setup>();
         }
 
         private void OnEnable()

@@ -13,7 +13,7 @@ namespace Evalve
     
             if (bundle == null)
             {
-                Debug.LogError("Failed to load AssetBundle!");
+                Logger.Log("Failed to load AssetBundle!");
                 return;
             }
 
@@ -34,7 +34,7 @@ namespace Evalve
             if (bundleRequest.assetBundle != null)
                 return bundleRequest.assetBundle;
             
-            Debug.LogError($"Failed to load AssetBundle from {url}");
+            Logger.Log($"Failed to load AssetBundle from {url}");
             return null;
         }
 
@@ -42,7 +42,7 @@ namespace Evalve
         {
             if (string.IsNullOrEmpty(assetName))
             {
-                Debug.LogError("Asset name is empty!");
+                Logger.Log("Asset name is empty!");
                 return;
             }
 
@@ -55,13 +55,13 @@ namespace Evalve
 
             if (assetRequest.asset == null)
             {
-                Debug.LogError($"Failed to load asset {assetName} from AssetBundle");
+                Logger.Log($"Failed to load asset {assetName} from AssetBundle");
                 return;
             }
 
             var loadedAsset = assetRequest.asset as GameObject;
             Object.Instantiate(loadedAsset);
-            Debug.Log($"Successfully loaded and instantiated {assetName}");
+            Logger.Log($"Successfully loaded and instantiated {assetName}");
         } 
     }
 }

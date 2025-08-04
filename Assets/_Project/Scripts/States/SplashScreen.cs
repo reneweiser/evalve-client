@@ -1,5 +1,5 @@
-﻿using Evalve.Panels;
-using Evalve.Systems;
+﻿using Evalve.Systems;
+using SceneObject = Evalve.Panels.SceneObject;
 
 namespace Evalve.States
 {
