@@ -1,14 +1,15 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Evalve.Client;
+using Evalve.SceneObjects;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Evalve
 {
     public class Setup : MonoBehaviour
     {
-        [SerializeField] private SceneObjectFactory _sceneObjectFactory;
+        [FormerlySerializedAs("_sceneObjectFactory")] [SerializeField] private Factory factory;
         [SerializeField] private string _assetId;
         [SerializeField] private string _nameFilter;
 
@@ -34,7 +35,7 @@ namespace Evalve
 
             foreach (var sceneObject in sceneObjects)
             {
-                _sceneObjectFactory.Create(sceneObject);
+                factory.Create(sceneObject);
             }
         }
     }

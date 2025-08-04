@@ -34,6 +34,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "165cbf38-0b81-410e-aaa6-f613c51c09b1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Sprint",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
@@ -55,6 +64,15 @@
                     "name": "Use",
                     "type": "Button",
                     "id": "83e1b7ca-fe03-4819-9112-2a8b8af36771",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CancelUse",
+                    "type": "Button",
+                    "id": "0ab8e8bb-b1f7-432f-b91c-393c7c1e634d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "Hold",
@@ -205,12 +223,45 @@
                 },
                 {
                     "name": "",
+                    "id": "65f739a7-9836-4f05-8aa7-e2066b57bd22",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "10c47b63-99c6-467b-8c07-84fde407c406",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e1d5bb95-ed86-4ef6-8b5e-bd667bcc56af",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CancelUse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77133c6a-0e1d-4239-95ef-384a6bc75f90",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CancelUse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
