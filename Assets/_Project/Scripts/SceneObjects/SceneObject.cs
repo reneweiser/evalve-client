@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Evalve.SceneObjects
@@ -23,6 +25,11 @@ namespace Evalve.SceneObjects
         public void SetIsDragging(bool isDragging)
         {
             _handle.SetIsDragging(isDragging);
+        }
+
+        public IEnumerable<Pose> GetPoses()
+        {
+            return GetComponentsInChildren<Pose>();
         }
     }
 }

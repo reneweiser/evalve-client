@@ -161,6 +161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2815713653633346459}
+  - component: {fileID: 5871190572670056504}
   - component: {fileID: 1683134986281788051}
   m_Layer: 0
   m_Name: Character
@@ -185,6 +186,20 @@ Transform:
   - {fileID: 5861365208692535065}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5871190572670056504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2485121978985986833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca9657e9d99a4e92a4c52876fd8ef1d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flyingMovement: {fileID: 1683134986281788051}
+  _cameraRotation: {fileID: 8626179081830373466}
 --- !u!114 &1683134986281788051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,5 +213,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 10
-  _playerCamera: {fileID: 4328331405193608985}
-  _inputActions: {fileID: -944628639613478452, guid: 8871dd131d0753080bbd924e85fa2bff, type: 3}

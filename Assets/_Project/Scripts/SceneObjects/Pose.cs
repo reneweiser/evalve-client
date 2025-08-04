@@ -4,5 +4,6 @@ namespace Evalve.SceneObjects
 {
     public class Pose : MonoBehaviour
     {
+        
     }
 }

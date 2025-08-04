@@ -12,6 +12,7 @@ namespace Evalve.Systems
         [SerializeField] private SceneCursor _sceneCursor;
         [SerializeField] private Spawner spawner;
         [SerializeField] private SceneObject _ui;
+        [SerializeField] private Avatar _avatar;
         [SerializeField] private Camera _camera;
         [SerializeField] private Factory factory;
         [SerializeField] private UiStateMachine _uiStateMachine;
@@ -19,6 +20,7 @@ namespace Evalve.Systems
         
         private void Awake()
         {
+            Services.Register(_avatar);
             Services.Register(_camera);
             Services.Register(_eventSystem);
             Services.Register(_inputActions);
@@ -30,6 +32,7 @@ namespace Evalve.Systems
         }
         private void Start()
         {
+            // _uiStateMachine.ChangeState<States.SelectingTool>();
             _uiStateMachine.ChangeState<States.Setup>();
         }
 

@@ -11,11 +11,13 @@ namespace Evalve.States
         private readonly SceneObjects.SceneObject _sceneObject;
         private readonly AddPose _ui;
         private string _role = "Default";
+        private readonly ListPoses _listPoses;
 
         public AddingPose(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
         {
             _sceneObject = sceneObject;
             _ui = Services.Get<SceneObject>().Show<AddPose>();
+            _listPoses = Services.Get<SceneObject>().Show<ListPoses>();
         }
 
         public override void Enter()
@@ -24,6 +26,11 @@ namespace Evalve.States
             _ui.PoseAdded += AddPose;
             _ui.Canceled += Back;
             _sceneObject.SetIsSelected(true);
+            
+            foreach (var pose in _sceneObject.GetPoses())
+            {
+                _listPoses.AddPose(pose);
+            }
         }
 
         public override void Exit()
@@ -32,6 +39,7 @@ namespace Evalve.States
             _ui.PoseAdded -= AddPose;
             _ui.Canceled -= Back;
             _sceneObject.SetIsSelected(false);
+            _listPoses.Clear();
         }
 
         public override void Update() { }
