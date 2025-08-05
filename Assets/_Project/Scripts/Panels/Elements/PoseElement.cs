@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Pose = Evalve.SceneObjects.Pose;
 
-namespace Evalve.Panels
+namespace Evalve.Panels.Elements
 {
     public class PoseElement : UiElement
     {

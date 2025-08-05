@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,13 @@ namespace Evalve.SceneObjects
         [SerializeField] Handle _handle;
         [SerializeField] Checkpoint _checkpointPrefab;
         [SerializeField] Pose _posePrefab;
-        
+        private bool _isActive;
+
+        private void Awake()
+        {
+            gameObject.SetActive(_isActive);
+        }
+
         public void AddPose(string role, Vector3 position, Quaternion rotation)
         {
             var obj = Instantiate(_posePrefab, transform);
@@ -30,6 +35,18 @@ namespace Evalve.SceneObjects
         public IEnumerable<Pose> GetPoses()
         {
             return GetComponentsInChildren<Pose>();
+        }
+
+        public void SetIsActive(bool isActive)
+        {
+            _isActive = isActive;
+            gameObject.SetActive(_isActive);
+        }
+
+        public void Toggle()
+        {
+            _isActive = !_isActive;
+            gameObject.SetActive(_isActive);
         }
     }
 }

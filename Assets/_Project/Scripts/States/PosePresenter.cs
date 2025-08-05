@@ -1,4 +1,5 @@
 ﻿using Evalve.Panels;
+using Evalve.Panels.Elements;
 using Evalve.Systems;
 using UnityEngine;
 using Pose = Evalve.SceneObjects.Pose;
@@ -29,13 +30,13 @@ namespace Evalve.States
 
         public void Delete()
         {
-            _pose.gameObject.SetActive(false);
-            _poseElement.gameObject.SetActive(false);
+            Object.Destroy(_pose.gameObject);
+            Object.Destroy(_poseElement.gameObject);
         }
 
         public void ClearElement()
         {
-            _poseElement.gameObject.SetActive(false);
+            Object.Destroy(_poseElement.gameObject);
         }
     }
 }

@@ -46,16 +46,6 @@ namespace Evalve
             _inputActions["Elevation"].Enable();
         }
 
-        private void OnEnable()
-        {
-            _inputActions.Enable();
-        }
-
-        private void OnDisable()
-        {
-            _inputActions.Disable();
-        }
-
         private void FixedUpdate()
         {
             HandleRotation();

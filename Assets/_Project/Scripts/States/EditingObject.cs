@@ -1,7 +1,7 @@
 ﻿using Evalve.Panels;
+using Evalve.Panels.Elements;
 using Evalve.SceneObjects;
 using Evalve.Systems;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using SceneObject = Evalve.Panels.SceneObject;
 
@@ -10,38 +10,40 @@ namespace Evalve.States
     public class EditingObject : State
     {
         private readonly SceneObjects.SceneObject _sceneObject;
-        private readonly SceneObjectEdit _ui;
+        private readonly Info _ui;
         private readonly InputAction _use;
-        private readonly EventSystem _eventSystem;
         private bool _isMouseOverGui;
+        private readonly Actions _actions;
 
         public EditingObject(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
         {
-            _eventSystem = Services.Get<EventSystem>();
             _sceneObject = sceneObject;
             _use = Services.Get<InputActionAsset>()["Use"];
-            _ui = Services.Get<SceneObject>().Show<SceneObjectEdit>();
+            _ui = Services.Get<SceneObject>().Show<Info>();
+            _actions = _ui.GetComponent<Actions>();
         }
 
         public override void Enter()
         {
             _use.canceled += SelectObject;
-            _ui.AddPoseSelected += AddPose;
-            _ui.MoveSelected += Move;
-            _ui.DeleteSelected += Delete;
-            _ui.Canceled += Back;
-            _ui.SetPosition(_sceneObject.transform.position);
+            
+            _actions.AddAction("Poses", () => _stateMachine.ChangeState<AddingPose>(_sceneObject));
+            _actions.AddAction("Move", () => _stateMachine.ChangeState<MovingObject>(_sceneObject));
+            _actions.AddAction("Delete", () => _stateMachine.ChangeState<DeletingObject>(_sceneObject));
+
+            _ui.SetTitle("Editing " + _sceneObject.name);
+            
             _sceneObject.SetIsSelected(true);
         }
 
         public override void Exit()
         {
             _use.canceled -= SelectObject;
-            _ui.AddPoseSelected -= AddPose;
-            _ui.MoveSelected -= Move;
-            _ui.DeleteSelected -= Delete;
-            _ui.Canceled -= Back;
             _sceneObject.SetIsSelected(false);
+            
+            _actions.RemoveAction("Poses");
+            _actions.RemoveAction("Move");
+            _actions.RemoveAction("Delete");
         }
 
         public override void Update() { }
@@ -59,26 +61,6 @@ namespace Evalve.States
             var sceneObject = body.GetComponentInParent<SceneObjects.SceneObject>();
             
             _stateMachine.ChangeState<EditingObject>(sceneObject);
-        }
-
-        private void AddPose()
-        {
-            _stateMachine.ChangeState<AddingPose>(_sceneObject);
-        }
-
-        private void Move()
-        {
-            _stateMachine.ChangeState<MovingObject>(_sceneObject);
-        }
-
-        private void Delete()
-        {
-            _stateMachine.ChangeState<DeletingObject>(_sceneObject);
-        }
-
-        private void Back()
-        {
-            _stateMachine.ChangeState<SelectingTool>();
         }
     }
 }

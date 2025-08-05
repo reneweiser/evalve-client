@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Evalve.Panels.Elements;
 using Evalve.States;
 using UnityEngine;
 using Pose = Evalve.SceneObjects.Pose;
@@ -20,9 +21,10 @@ namespace Evalve.Panels
 
         public void Clear()
         {
-            foreach (var presenter in _poses)
+            for (var i = _poses.Count - 1; i >= 0; i--)
             {
-                presenter.ClearElement();
+                _poses[i].ClearElement();
+                _poses.RemoveAt(i);
             }
         }
     }

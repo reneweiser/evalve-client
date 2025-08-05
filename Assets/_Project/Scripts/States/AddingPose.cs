@@ -10,8 +10,8 @@ namespace Evalve.States
     {
         private readonly SceneObjects.SceneObject _sceneObject;
         private readonly AddPose _ui;
-        private string _role = "Default";
         private readonly ListPoses _listPoses;
+        private string _role = "Default";
 
         public AddingPose(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
         {
@@ -53,7 +53,7 @@ namespace Evalve.States
         {
             var camera = Services.Get<Camera>();
             _sceneObject.AddPose(_role, camera.transform.position, camera.transform.rotation);
-            _stateMachine.ChangeState<EditingObject>(_sceneObject);
+            _stateMachine.ChangeState<AddingPose>(_sceneObject);
         }
 
         private void Back()

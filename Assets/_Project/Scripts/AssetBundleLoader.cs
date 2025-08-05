@@ -1,12 +1,15 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Evalve
 {
     public class AssetBundleLoader
     {
+        public static event Action<GameObject> Loaded;
         public static async Task LoadAssetsAsync(string bundlePath, string[] assetNames)
         {
             var bundle = await LoadAssetBundleAsync(bundlePath);
@@ -17,7 +20,9 @@ namespace Evalve
                 return;
             }
 
-            await Task.WhenAll(assetNames.Select(assetName => LoadAssetFromBundleAsync(bundle, assetName)));
+            await Task.WhenAll(assetNames
+                .OrderBy(assetName => assetName)
+                .Select(assetName => LoadAssetFromBundleAsync(bundle, assetName)));
 
             bundle.Unload(false);
         }
@@ -60,7 +65,7 @@ namespace Evalve
             }
 
             var loadedAsset = assetRequest.asset as GameObject;
-            Object.Instantiate(loadedAsset);
+            Loaded?.Invoke(Object.Instantiate(loadedAsset));
             Logger.Log($"Successfully loaded and instantiated {assetName}");
         } 
     }

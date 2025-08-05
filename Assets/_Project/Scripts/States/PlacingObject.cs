@@ -25,6 +25,7 @@ namespace Evalve.States
         {
             _ui.SetTitle("Placing object");
             _ui.SetLabel("<color=#bada55>[LeftClick]</color> to place object");
+            _preview.SetIsActive(true);
             _preview.SetIsDragging(true);
             
             _input.canceled += PlaceObject;

@@ -1,4 +1,5 @@
-﻿using Evalve.SceneObjects;
+﻿using Evalve.Panels;
+using Evalve.SceneObjects;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -17,6 +18,7 @@ namespace Evalve.Systems
         [SerializeField] private Factory factory;
         [SerializeField] private UiStateMachine _uiStateMachine;
         [SerializeField] private EventSystem _eventSystem;
+        [SerializeField] private AssetManager _assetManager;
         
         private void Awake()
         {
@@ -29,11 +31,13 @@ namespace Evalve.Systems
             Services.Register(factory);
             Services.Register(_ui);
             Services.Register(_uiStateMachine);
+            Services.Register(_assetManager);
         }
         private void Start()
         {
             // _uiStateMachine.ChangeState<States.SelectingTool>();
             _uiStateMachine.ChangeState<States.Setup>();
+            // _uiStateMachine.ChangeState<States.Test>();
         }
 
         private void OnEnable()
