@@ -2,7 +2,6 @@
 using Evalve.SceneObjects;
 using Evalve.Systems;
 using UnityEngine;
-using SceneObject = Evalve.Panels.SceneObject;
 
 namespace Evalve.States
 {
@@ -14,7 +13,7 @@ namespace Evalve.States
         public DeletingObject(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
         {
             _sceneObject = sceneObject;
-            _ui = Services.Get<SceneObject>().Show<SceneObjectDelete>();
+            _ui = Services.Get<Ui>().Show<SceneObjectDelete>();
         }
 
         public override void Enter()

@@ -3,21 +3,26 @@ using Evalve.Systems;
 
 namespace Evalve.States
 {
-    public class UsingElementsMenu : State
+    public class Idle : State
     {
-        public UsingElementsMenu(StateMachine stateMachine) : base(stateMachine)
+        private bool _isVisible;
+
+        public Idle(StateMachine stateMachine) : base(stateMachine)
         {
-            Services.Get<Ui>().Show<ElementsMenu>();
         }
 
         public override void Enter()
         {
             _inputUse.canceled += SelectObject;
+            _inputMenu.started += OpenMenu;
+            
+            Services.Get<Ui>().Show<Panels.Idle>();
         }
 
         public override void Exit()
         {
             _inputUse.canceled -= SelectObject;
+            _inputMenu.started -= OpenMenu;
         }
 
         public override void Update() { }

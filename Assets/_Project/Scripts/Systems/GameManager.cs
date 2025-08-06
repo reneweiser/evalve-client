@@ -1,9 +1,9 @@
-﻿using Evalve.Panels;
+﻿using Evalve.Client;
+using Evalve.Panels;
 using Evalve.SceneObjects;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using SceneObject = Evalve.Panels.SceneObject;
 
 namespace Evalve.Systems
 {
@@ -12,7 +12,7 @@ namespace Evalve.Systems
         [SerializeField] private InputActionAsset _inputActions;
         [SerializeField] private SceneCursor _sceneCursor;
         [SerializeField] private Spawner spawner;
-        [SerializeField] private SceneObject _ui;
+        [SerializeField] private Ui _ui;
         [SerializeField] private Avatar _avatar;
         [SerializeField] private Camera _camera;
         [SerializeField] private Factory factory;
@@ -32,12 +32,13 @@ namespace Evalve.Systems
             Services.Register(_ui);
             Services.Register(_uiStateMachine);
             Services.Register(_assetManager);
+            Services.Register(new Connection("http://localhost/api/v1"));
         }
         private void Start()
         {
             // _uiStateMachine.ChangeState<States.SelectingTool>();
-            _uiStateMachine.ChangeState<States.Setup>();
-            // _uiStateMachine.ChangeState<States.Test>();
+            // _uiStateMachine.ChangeState<States.Setup>();
+            _uiStateMachine.ChangeState<States.CreateSession>();
         }
 
         private void OnEnable()

@@ -10,7 +10,7 @@ namespace Evalve.States
 
         public SelectingTool(StateMachine stateMachine) : base(stateMachine)
         {
-            _ui = Services.Get<SceneObject>().Show<SceneObjectTools>();
+            _ui = Services.Get<Ui>().Show<SceneObjectTools>();
         }
 
         public override void Enter()
@@ -44,7 +44,7 @@ namespace Evalve.States
 
         private void Back()
         {
-            _stateMachine.ChangeState<IdleUi>();
+            _stateMachine.ChangeState<Idle>();
         }
     }
 }

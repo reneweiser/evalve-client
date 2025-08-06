@@ -1,29 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Evalve.Panels.Elements;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Evalve.Panels
 {
     public class ElementsMenu : UiPanel
     {
-        public event Action Hide;
-        
         [SerializeField] private MenuButton _buttonPrefab;
         [SerializeField] private MenuPanel _panelPrefab;
         
         [SerializeField] private Transform _buttonContainer;
         [SerializeField] private Transform _panelContainer;
-        
-        [SerializeField] private Button _hide;
 
         private readonly List<MenuItem> _items = new();
-
-        private void Awake()
-        {
-            _hide.onClick.AddListener(() => Hide?.Invoke());
-        }
 
         public MenuItem CreateMenuItem(string label)
         {

@@ -10,7 +10,7 @@ namespace Evalve.States
 
         public Test(StateMachine stateMachine) : base(stateMachine)
         {
-            _ui = Services.Get<SceneObject>().Show<ElementsMenu>();
+            _ui = Services.Get<Ui>().Show<ElementsMenu>();
         }
 
         public override void Enter()

@@ -2,22 +2,21 @@
 using Evalve.SceneObjects;
 using Evalve.Systems;
 using UnityEngine;
-using SceneObject = Evalve.Panels.SceneObject;
 
 namespace Evalve.States
 {
-    public class AddingPose : State
+    public class ManagingPoses : State
     {
         private readonly SceneObjects.SceneObject _sceneObject;
         private readonly AddPose _ui;
         private readonly ListPoses _listPoses;
         private string _role = "Default";
 
-        public AddingPose(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
+        public ManagingPoses(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
         {
             _sceneObject = sceneObject;
-            _ui = Services.Get<SceneObject>().Show<AddPose>();
-            _listPoses = Services.Get<SceneObject>().Show<ListPoses>();
+            _ui = Services.Get<Ui>().Show<AddPose>();
+            _listPoses = Services.Get<Ui>().Show<ListPoses>();
         }
 
         public override void Enter()
@@ -53,7 +52,7 @@ namespace Evalve.States
         {
             var camera = Services.Get<Camera>();
             _sceneObject.AddPose(_role, camera.transform.position, camera.transform.rotation);
-            _stateMachine.ChangeState<AddingPose>(_sceneObject);
+            _stateMachine.ChangeState<ManagingPoses>(_sceneObject);
         }
 
         private void Back()

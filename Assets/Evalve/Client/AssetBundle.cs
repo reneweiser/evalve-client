@@ -11,7 +11,7 @@ namespace Evalve.Client
         [JsonProperty("name")]
         public string Name;
         [JsonProperty("crc")]
-        public int Checksum;
+        public uint Checksum;
         [JsonProperty("unity_version")]
         public string UnityVersion;
         [JsonProperty("url")]

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Evalve.Panels
 {
-    public class SceneObject : MonoBehaviour
+    public class Ui : MonoBehaviour
     {
         private Dictionary<Type, UiPanel> _instances;
 
@@ -18,7 +18,17 @@ namespace Evalve.Panels
                 );
         }
 
-        public T Show<T>() where T : MonoBehaviour
+        public T Get<T>() where T : UiPanel
+        {
+            if (!_instances.TryGetValue(typeof(T), out var uiPanel))
+            {
+                throw new InvalidOperationException("Could not find instance of type " + typeof(T));
+            }
+            
+            return uiPanel as T;
+        }
+
+        public T Show<T>() where T : UiPanel
         {
             foreach (var item in _instances)
             {

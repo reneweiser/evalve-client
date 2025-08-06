@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Evalve.Client;
 using Evalve.Panels;
@@ -6,8 +7,6 @@ using Evalve.Panels.Elements;
 using Evalve.SceneObjects;
 using Evalve.Systems;
 using UnityEngine;
-using AssetBundle = Evalve.Client.AssetBundle;
-using SceneObject = Evalve.Panels.SceneObject;
 
 namespace Evalve.States
 {
@@ -18,68 +17,87 @@ namespace Evalve.States
         private readonly MenuItem _assetsMenu;
         private readonly MenuItem _objectsMenu;
         private readonly MenuItem _toolsMenu;
+        private readonly SessionConfig _session;
+        private readonly Connection _connection;
 
         public Setup(StateMachine stateMachine) : base(stateMachine)
         {
             _assetManager = Services.Get<AssetManager>();
+            _session = Services.Get<SessionConfig>();
+            _connection = Services.Get<Connection>();
+
+            var ui = Services.Get<Ui>();
+            var menu = ui.Get<ElementsMenu>();
             
-            var menu = Services.Get<SceneObject>().Show<ElementsMenu>();
             _assetsMenu = menu.CreateMenuItem("Assets");
             _objectsMenu = menu.CreateMenuItem("Objects");
             _toolsMenu = menu.CreateMenuItem("Tools");
             
-            _ui = Services.Get<SceneObject>().Show<Panels.SplashScreen>();
+            _ui = ui.Show<Panels.SplashScreen>();
         }
 
         public override async void Enter()
         {
-            Logger.EntryLogged += PrintLog;
+            Logger.EntryLoggedFormatted += PrintLog;
+            AssetBundleLoader.Loaded += AddAssetToMenu;
             _ui.ClearLog();
             _ui.SetConfirmActive(false);
             
-            Logger.Log("<color=#bada55>Loading Scene... Please wait.</color>");
-            
-            var connection = new Connection("http://localhost/api/v1");
-            
-            await HandleAssetLoading(connection);
-            await HandleObjectLoading(connection);
+            Logger.Log("Loading Scene. Please wait.");
+
+            await Task.WhenAll(_session.AssetIds.Select(HandleAssetLoading));
+            await Task.WhenAll(_session.ObjectIds.Select(HandleObjectLoading));
             
             _toolsMenu.AddCommand("Place Object", () => _stateMachine.ChangeState<PlacingObject>());
             _toolsMenu.AddCommand("Select Object", () => _stateMachine.ChangeState<SelectingObject>());
             
-            Logger.Log("<color=#bada55>Scene Loaded successfully!</color>");
+            Logger.LogSuccess("Scene Loaded successfully!");
             
             _stateMachine.ChangeState<UsingElementsMenu>();
         }
 
         public override void Exit()
         {
-            Logger.EntryLogged -= PrintLog;
+            Logger.EntryLoggedFormatted -= PrintLog;
+            AssetBundleLoader.Loaded -= AddAssetToMenu;
         }
 
         public override void Update() { }
 
-        private async Task HandleObjectLoading(Connection connection)
+        private async Task HandleObjectLoading(string id)
         {
-            var sceneObjects = await connection.GetSceneObjectsAsync();
-            var factory = Services.Get<Factory>();
-            foreach (var sceneObject in sceneObjects)
+            Logger.Log("Loading Objects...");
+            try
             {
+                var sceneObject = await _connection.GetSceneObjectAsync(id);
+                var factory = Services.Get<Factory>();
                 var obj = factory.Create(sceneObject);
                 _objectsMenu.AddToggleCommand(obj.name, () => obj.Toggle());
             }
+            catch (Exception e)
+            {
+                Logger.LogError(e.Message);
+                throw;
+            }
         }
 
-        private async Task HandleAssetLoading(Connection connection)
+        private async Task HandleAssetLoading(string id)
         {
-            var assetBundle = await connection.GetAssetBundleAsync("01k1fy5qjxd3pvdajv72ty3ze0");
-            var assetNames = assetBundle.Elements
-                .Select(element => element.Name)
-                .ToArray();
-            AssetBundleLoader.Loaded += AddAssetToMenu;
-            await FileDownloader.DownloadFileAsync(assetBundle.Url, assetBundle.Id);
-            await AssetBundleLoader.LoadAssetsAsync(assetBundle.Id, assetNames);
-            AssetBundleLoader.Loaded -= AddAssetToMenu;
+            Logger.Log("Loading Assets...");
+            try
+            {
+                var assetBundle = await _connection.GetAssetBundleAsync(id);
+                var assetNames = assetBundle.Elements
+                    .Select(element => element.Name)
+                    .ToArray();
+                await FileDownloader.DownloadFileAsync(assetBundle.Url, assetBundle.Id);
+                await AssetBundleLoader.LoadAssetsAsync(assetBundle.Id, assetNames);
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e.Message);
+                throw;
+            }
         }
 
         private void AddAssetToMenu(GameObject asset)

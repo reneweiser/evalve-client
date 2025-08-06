@@ -1,8 +1,6 @@
 ﻿using Evalve.Panels;
-using Evalve.SceneObjects;
 using Evalve.Systems;
 using UnityEngine.InputSystem;
-using SceneObject = Evalve.Panels.SceneObject;
 
 namespace Evalve.States
 {
@@ -16,7 +14,7 @@ namespace Evalve.States
         {
             _input = Services.Get<InputActionAsset>()["Use"];
             _cancel = Services.Get<InputActionAsset>()["CancelUse"];
-            _ui = Services.Get<SceneObject>().Show<Info>();
+            _ui = Services.Get<Ui>().Show<Info>();
         }
 
         public override void Enter()
@@ -37,21 +35,6 @@ namespace Evalve.States
             _cancel.started -= Back;
         }
         public override void Update() { }
-
-        private void SelectObject(InputAction.CallbackContext obj)
-        {
-            var cursor = Services.Get<SceneCursor>();
-            
-            if (!cursor.IsValid)
-                return;
-
-            if (!cursor.Data.collider.TryGetComponent(typeof(Handle), out var body))
-                return;
-
-            var sceneObject = body.GetComponentInParent<SceneObjects.SceneObject>();
-            
-            _stateMachine.ChangeState<EditingObject>(sceneObject);
-        }
 
         private void Back(InputAction.CallbackContext obj)
         {

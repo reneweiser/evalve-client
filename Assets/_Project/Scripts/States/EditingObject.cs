@@ -3,7 +3,6 @@ using Evalve.Panels.Elements;
 using Evalve.SceneObjects;
 using Evalve.Systems;
 using UnityEngine.InputSystem;
-using SceneObject = Evalve.Panels.SceneObject;
 
 namespace Evalve.States
 {
@@ -11,34 +10,38 @@ namespace Evalve.States
     {
         private readonly SceneObjects.SceneObject _sceneObject;
         private readonly Info _ui;
-        private readonly InputAction _use;
         private bool _isMouseOverGui;
         private readonly Actions _actions;
 
         public EditingObject(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
         {
             _sceneObject = sceneObject;
-            _use = Services.Get<InputActionAsset>()["Use"];
-            _ui = Services.Get<SceneObject>().Show<Info>();
+            _ui = Services.Get<Ui>().Show<Info>();
             _actions = _ui.GetComponent<Actions>();
         }
 
         public override void Enter()
         {
-            _use.canceled += SelectObject;
+            _inputUse.canceled += SelectObject;
+            _inputMenu.started += OpenMenu;
             
-            _actions.AddAction("Poses", () => _stateMachine.ChangeState<AddingPose>(_sceneObject));
+            _ui.SetTitle("Editing " + _sceneObject.name);
+            var description = "Name: " + _sceneObject.name
+                + "\nPosition: " + _sceneObject.transform.position
+                + "\nRotation: " + _sceneObject.transform.rotation;
+            _ui.SetLabel(description);
+            _actions.AddAction("Poses", () => _stateMachine.ChangeState<ManagingPoses>(_sceneObject));
             _actions.AddAction("Move", () => _stateMachine.ChangeState<MovingObject>(_sceneObject));
             _actions.AddAction("Delete", () => _stateMachine.ChangeState<DeletingObject>(_sceneObject));
 
-            _ui.SetTitle("Editing " + _sceneObject.name);
             
             _sceneObject.SetIsSelected(true);
         }
 
         public override void Exit()
         {
-            _use.canceled -= SelectObject;
+            _inputUse.canceled -= SelectObject;
+            _inputMenu.started -= OpenMenu;
             _sceneObject.SetIsSelected(false);
             
             _actions.RemoveAction("Poses");
@@ -47,20 +50,5 @@ namespace Evalve.States
         }
 
         public override void Update() { }
-
-        private void SelectObject(InputAction.CallbackContext obj)
-        {
-            var cursor = Services.Get<SceneCursor>();
-            
-            if (!cursor.IsValid)
-                return;
-
-            if (!cursor.Data.collider.TryGetComponent(typeof(Handle), out var body))
-                return;
-
-            var sceneObject = body.GetComponentInParent<SceneObjects.SceneObject>();
-            
-            _stateMachine.ChangeState<EditingObject>(sceneObject);
-        }
     }
 }

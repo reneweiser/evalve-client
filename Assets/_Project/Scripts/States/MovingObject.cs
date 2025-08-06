@@ -3,7 +3,6 @@ using Evalve.SceneObjects;
 using Evalve.Systems;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using SceneObject = Evalve.Panels.SceneObject;
 
 namespace Evalve.States
 {
@@ -24,7 +23,7 @@ namespace Evalve.States
             _input = Services.Get<InputActionAsset>()["Use"];
             _cancel = Services.Get<InputActionAsset>()["CancelUse"];
             _cursor = Services.Get<SceneCursor>();
-            _ui = Services.Get<SceneObject>().Show<Info>();
+            _ui = Services.Get<Ui>().Show<Info>();
             _oldPosition = _sceneObject.transform.position;
             _oldRotation = _sceneObject.transform.rotation;
             _text = "<color=#bada55>[LeftClick]</color> to confirm object position"

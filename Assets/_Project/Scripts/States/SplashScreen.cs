@@ -1,5 +1,5 @@
-﻿using Evalve.Systems;
-using SceneObject = Evalve.Panels.SceneObject;
+﻿using Evalve.Panels;
+using Evalve.Systems;
 
 namespace Evalve.States
 {
@@ -9,7 +9,7 @@ namespace Evalve.States
 
         public SplashScreen(StateMachine stateMachine) : base(stateMachine)
         {
-            _ui = Services.Get<SceneObject>().Show<Panels.SplashScreen>();
+            _ui = Services.Get<Ui>().Show<Panels.SplashScreen>();
         }
 
         public override void Enter()
@@ -26,7 +26,7 @@ namespace Evalve.States
 
         private void OnConfirmed()
         {
-            _stateMachine.ChangeState<IdleUi>();
+            _stateMachine.ChangeState<Idle>();
         }
     }
 }

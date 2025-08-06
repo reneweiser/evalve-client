@@ -2,7 +2,6 @@
 using Evalve.SceneObjects;
 using Evalve.Systems;
 using UnityEngine.InputSystem;
-using SceneObject = Evalve.Panels.SceneObject;
 
 namespace Evalve.States
 {
@@ -18,7 +17,7 @@ namespace Evalve.States
             _cursor = Services.Get<SceneCursor>();
             _preview = Services.Get<Spawner>().SpawnAt(_cursor.Data.point);
             _input = Services.Get<InputActionAsset>()["Use"];
-            _ui = Services.Get<SceneObject>().Show<Info>();
+            _ui = Services.Get<Ui>().Show<Info>();
         }
 
         public override void Enter()
