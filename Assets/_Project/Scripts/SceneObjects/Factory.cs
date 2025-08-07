@@ -1,6 +1,7 @@
 using System;
 using Evalve.Client;
 using UnityEngine;
+using ClientTransform = Evalve.Client.Transform;
 
 namespace Evalve.SceneObjects
 {
@@ -11,8 +12,45 @@ namespace Evalve.SceneObjects
         [SerializeField] private Body _bodyPrefab;
         [SerializeField] private Checkpoint _checkpointPrefab;
         [SerializeField] private Pose _posePrefab;
+
+        public SceneObject CreateTemporary(Vector3 position)
+        {
+            return Create(new Client.SceneObject
+            {
+                Id = Ulid.NewUlid().ToString(),
+                TeamId = "01k1atqfmqzms79n6erv1k4dq2",
+                Name = "New Scene Object",
+                Transform = new ClientTransform
+                {
+                    Position = position.ToVector(),
+                    Rotation = Vector3.zero.ToVector(),
+                },
+                Properties = new Property[] { }
+            });
+        }
+
+        public SceneObject CreateNewAt(Vector3 position)
+        {
+            return Create(new Client.SceneObject
+            {
+                Id = Ulid.NewUlid().ToString(),
+                TeamId = "01k1atqfmqzms79n6erv1k4dq2",
+                Name = "New Scene Object",
+                Transform = new ClientTransform
+                {
+                    Position = position.ToVector(),
+                    Rotation = Vector3.zero.ToVector(),
+                },
+                Properties = new Property[] { }
+            });
+        }
         
-        public SceneObject Create(Client.SceneObject data)
+        public SceneObject CreateFromData(Client.SceneObject data)
+        {
+            return Create(data);
+        }
+
+        private SceneObject Create(Client.SceneObject data)
         {
             var obj = Instantiate(
                 _sceneObjectPrefab,
@@ -20,6 +58,7 @@ namespace Evalve.SceneObjects
                 Quaternion.Euler(data.Transform.Rotation.ToVector3()));
 
             obj.name = $"sceneObject_{data.Name}";
+            obj.SetData(data);
             
             foreach (var property in data.Properties)
             {
@@ -29,10 +68,10 @@ namespace Evalve.SceneObjects
                     Client.Body body => CreateBody(body, obj),
                     Client.Checkpoint checkpoint => CreateCheckpoint(checkpoint, obj),
                     Client.Pose pose => CreatePose(pose, obj),
-                    _ => throw new InvalidOperationException("Unknown property type")
+                    _ => throw new InvalidOperationException("Unknown property type: " + property.GetType().FullName)
                 };
             }
-            
+
             return obj;
         }
 

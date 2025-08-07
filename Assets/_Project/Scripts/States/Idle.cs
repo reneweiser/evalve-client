@@ -7,7 +7,7 @@ namespace Evalve.States
     {
         private bool _isVisible;
 
-        public Idle(StateMachine stateMachine) : base(stateMachine)
+        public Idle()
         {
         }
 

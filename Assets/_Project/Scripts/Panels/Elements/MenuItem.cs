@@ -31,5 +31,10 @@ namespace Evalve.Panels.Elements
         {
             _menuPanel.AddToggleCommand(label, action.Invoke);
         }
+
+        public void RemoveCommand(string label)
+        {
+            _menuPanel.RemoveCommand(label);
+        }
     }
 }

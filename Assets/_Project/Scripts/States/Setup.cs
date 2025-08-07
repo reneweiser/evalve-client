@@ -7,6 +7,8 @@ using Evalve.Panels.Elements;
 using Evalve.SceneObjects;
 using Evalve.Systems;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using SceneObject = Evalve.SceneObjects.SceneObject;
 
 namespace Evalve.States
 {
@@ -17,14 +19,17 @@ namespace Evalve.States
         private readonly MenuItem _assetsMenu;
         private readonly MenuItem _objectsMenu;
         private readonly MenuItem _toolsMenu;
+        private readonly MenuItem _settings;
         private readonly SessionConfig _session;
         private readonly Connection _connection;
+        private readonly ObjectManager _objectsManager;
 
-        public Setup(StateMachine stateMachine) : base(stateMachine)
+        public Setup()
         {
             _assetManager = Services.Get<AssetManager>();
             _session = Services.Get<SessionConfig>();
             _connection = Services.Get<Connection>();
+            _objectsManager = Services.Get<ObjectManager>();
 
             var ui = Services.Get<Ui>();
             var menu = ui.Get<ElementsMenu>();
@@ -32,6 +37,8 @@ namespace Evalve.States
             _assetsMenu = menu.CreateMenuItem("Assets");
             _objectsMenu = menu.CreateMenuItem("Objects");
             _toolsMenu = menu.CreateMenuItem("Tools");
+            _settings = menu.CreateMenuItem("Settings");
+            menu.Show(_assetsMenu);
             
             _ui = ui.Show<Panels.SplashScreen>();
         }
@@ -40,6 +47,9 @@ namespace Evalve.States
         {
             Logger.EntryLoggedFormatted += PrintLog;
             AssetBundleLoader.Loaded += AddAssetToMenu;
+            // TODO: Use MVP pattern ObjectsManager/ObjectsManagerPresenter/ObjectsManagerView to create objects list in menu
+            // _objectsManager.SceneObjectAdded += obj => _objectsMenu.AddCommand(obj.Data.Name, obj.Toggle);
+            // _objectsManager.SceneObjectRemoved += obj => _objectsMenu.RemoveCommand(obj.Data.Id);
             _ui.ClearLog();
             _ui.SetConfirmActive(false);
             
@@ -48,12 +58,14 @@ namespace Evalve.States
             await Task.WhenAll(_session.AssetIds.Select(HandleAssetLoading));
             await Task.WhenAll(_session.ObjectIds.Select(HandleObjectLoading));
             
-            _toolsMenu.AddCommand("Place Object", () => _stateMachine.ChangeState<PlacingObject>());
-            _toolsMenu.AddCommand("Select Object", () => _stateMachine.ChangeState<SelectingObject>());
+            _toolsMenu.AddCommand("Place Object", () => ChangeState(new CreatingObject()));
+            _toolsMenu.AddCommand("Select Object", () => ChangeState(new SelectingObject()));
+            
+            _settings.AddCommand("Reload", () => SceneManager.LoadSceneAsync("test1"));
             
             Logger.LogSuccess("Scene Loaded successfully!");
             
-            _stateMachine.ChangeState<UsingElementsMenu>();
+            ChangeState(new UsingElementsMenu());
         }
 
         public override void Exit()
@@ -71,8 +83,8 @@ namespace Evalve.States
             {
                 var sceneObject = await _connection.GetSceneObjectAsync(id);
                 var factory = Services.Get<Factory>();
-                var obj = factory.Create(sceneObject);
-                _objectsMenu.AddToggleCommand(obj.name, () => obj.Toggle());
+                var obj = factory.CreateFromData(sceneObject);
+                _objectsManager.Create(obj);
             }
             catch (Exception e)
             {

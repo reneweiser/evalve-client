@@ -17,7 +17,7 @@ namespace Evalve
         {
             const string url = "http://localhost/api/v1";
 
-            var connection = new Connection(url);
+            var connection = new Connection(url, "authtoken");
             
             var assetBundle = await connection.GetAssetBundleAsync(_assetId);
             var assetNames = assetBundle.Elements
@@ -35,7 +35,7 @@ namespace Evalve
 
             foreach (var sceneObject in sceneObjects)
             {
-                factory.Create(sceneObject);
+                factory.CreateFromData(sceneObject);
             }
         }
     }

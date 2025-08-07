@@ -11,6 +11,7 @@ namespace Evalve.Panels.Elements
         [SerializeField] private Transform _container;
 
         private readonly Dictionary<MenuButton, bool> _buttons = new();
+        private readonly List<MenuButton> _menuButtons = new();
         
         
         public void SetIsSelected(bool active)
@@ -23,6 +24,7 @@ namespace Evalve.Panels.Elements
             var button = Instantiate(_prefab, _container);
             button.SetLabel(label);
             button.SetCommand(action);
+            _menuButtons.Add(button);
         }
 
         public void AddToggleCommand(string label, Action action)
@@ -36,6 +38,18 @@ namespace Evalve.Panels.Elements
                 action?.Invoke();
             });
             _buttons.Add(button, false);
+            _menuButtons.Add(button);
+        }
+
+        public void RemoveCommand(string label)
+        {
+            var button = _menuButtons.Find(btn => btn.Label == label);
+            _menuButtons.Remove(button);
+            
+            if (_buttons.ContainsKey(button))
+                _buttons.Remove(button);
+            
+            Destroy(button.gameObject);
         }
     }
 }

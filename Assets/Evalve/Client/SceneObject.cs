@@ -38,7 +38,10 @@ namespace Evalve.Client
     }
 
     [JsonConverter(typeof(PropertyConverter))]
-    public abstract class Property { }
+    public abstract class Property
+    {
+        public abstract object ToDynamic();
+    }
 
     public class BimData : Property
     {
@@ -46,6 +49,11 @@ namespace Evalve.Client
         public int CadId;
         [JsonProperty("survey_point_position")]
         public Vector SurveyPointPosition;
+
+        public override object ToDynamic()
+        {
+            return new{};
+        }
     }
     
     public class Body : Property
@@ -54,12 +62,22 @@ namespace Evalve.Client
         public Vector Position;
         [JsonProperty("rotation")]
         public Vector Rotation;
+
+        public override object ToDynamic()
+        {
+            return new{};
+        }
     }
     
     public class Checkpoint : Property
     {
         [JsonProperty("perimeter")]
         public float Perimeter;
+
+        public override object ToDynamic()
+        {
+            return new{};
+        }
     }
     
     public class Pose : Property
@@ -70,6 +88,20 @@ namespace Evalve.Client
         public Vector Position;
         [JsonProperty("rotation")]
         public Vector Rotation;
+
+        public override object ToDynamic()
+        {
+            return new
+            {
+                data = new
+                {
+                    role = Role,
+                    position = Position,
+                    rotation = Rotation,
+                },
+                type = "pose",
+            };
+        }
     }
     
     public class PropertyConverter : JsonConverter<Property>
@@ -94,7 +126,7 @@ namespace Evalve.Client
 
         public override void WriteJson(JsonWriter writer, Property value, JsonSerializer serializer)
         {
-            serializer.Serialize(writer, value);
+            serializer.Serialize(writer, value.ToDynamic());
         }
 
         public override bool CanWrite => true;

@@ -13,6 +13,7 @@ namespace Evalve.Panels.Elements
         
         [SerializeField] private Color _activeColor;
         [SerializeField] private Color _inactiveColor;
+        public string Label => _text.text;
 
         public void SetLabel(string label)
         {

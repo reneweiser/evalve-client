@@ -13,7 +13,7 @@ namespace Evalve.States
         private readonly List<string> _assets = new();
         private readonly List<string> _objects = new();
 
-        public CreateSession(StateMachine stateMachine) : base(stateMachine)
+        public CreateSession()
         {
             var ui = Services.Get<Ui>();
             _ui = ui.Show<SessionConfigurator>();
@@ -55,7 +55,7 @@ namespace Evalve.States
                 AssetIds = _assets.ToArray(),
                 ObjectIds = _objects.ToArray(),
             });
-            _stateMachine.ChangeState<Setup>();
+            ChangeState(new Setup());
         }
     }
 }

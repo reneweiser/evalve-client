@@ -8,7 +8,7 @@ namespace Evalve.States
     {
         private readonly SceneObjectTools _ui;
 
-        public SelectingTool(StateMachine stateMachine) : base(stateMachine)
+        public SelectingTool()
         {
             _ui = Services.Get<Ui>().Show<SceneObjectTools>();
         }
@@ -32,10 +32,10 @@ namespace Evalve.States
             switch (toolType)
             {
                 case ToolType.Create:
-                    _stateMachine.ChangeState<PlacingObject>();
+                    ChangeState(new CreatingObject());
                     break;
                 case ToolType.Select:
-                    _stateMachine.ChangeState<SelectingObject>();
+                    ChangeState(new SelectingObject());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(toolType), toolType, null);
@@ -44,7 +44,7 @@ namespace Evalve.States
 
         private void Back()
         {
-            _stateMachine.ChangeState<Idle>();
+            ChangeState(new Idle());
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Evalve.States
         private bool _isMouseOverGui;
         private readonly Actions _actions;
 
-        public EditingObject(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
+        public EditingObject(SceneObjects.SceneObject sceneObject)
         {
             _sceneObject = sceneObject;
             _ui = Services.Get<Ui>().Show<Info>();
@@ -30,9 +30,9 @@ namespace Evalve.States
                 + "\nPosition: " + _sceneObject.transform.position
                 + "\nRotation: " + _sceneObject.transform.rotation;
             _ui.SetLabel(description);
-            _actions.AddAction("Poses", () => _stateMachine.ChangeState<ManagingPoses>(_sceneObject));
-            _actions.AddAction("Move", () => _stateMachine.ChangeState<MovingObject>(_sceneObject));
-            _actions.AddAction("Delete", () => _stateMachine.ChangeState<DeletingObject>(_sceneObject));
+            _actions.AddAction("Poses", () => ChangeState(new ManagingPoses(_sceneObject)));
+            _actions.AddAction("Move", () => ChangeState(new MovingObject(_sceneObject)));
+            _actions.AddAction("Delete", () => ChangeState(new DeletingObject(_sceneObject)));
 
             
             _sceneObject.SetIsSelected(true);

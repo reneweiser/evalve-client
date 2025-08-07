@@ -5,7 +5,7 @@ namespace Evalve.States
 {
     public class UsingElementsMenu : State
     {
-        public UsingElementsMenu(StateMachine stateMachine) : base(stateMachine)
+        public UsingElementsMenu()
         {
             Services.Get<Ui>().Show<ElementsMenu>();
         }

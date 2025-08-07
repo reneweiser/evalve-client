@@ -1,46 +1,48 @@
-﻿using Evalve.Panels;
+﻿using Evalve.Commands;
+using Evalve.Panels;
+using Evalve.Panels.Elements;
 using Evalve.SceneObjects;
 using Evalve.Systems;
-using UnityEngine;
 
 namespace Evalve.States
 {
     public class DeletingObject : State
     {
-        private readonly SceneObjects.SceneObject _sceneObject;
-        private readonly SceneObjectDelete _ui;
+        private readonly SceneObject _sceneObject;
+        private readonly Info _ui;
+        private readonly Actions _actions;
 
-        public DeletingObject(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
+        public DeletingObject(SceneObject sceneObject)
         {
             _sceneObject = sceneObject;
-            _ui = Services.Get<Ui>().Show<SceneObjectDelete>();
+            _ui = Services.Get<Ui>().Show<Info>();
+            _actions = _ui.GetComponent<Actions>();
         }
 
         public override void Enter()
         {
-            _ui.ObjectDeleted += DeleteObject;
-            _ui.Canceled += Back;
+            _ui.SetTitle("Deleting object");
+            _ui.SetLabel("<color=red>This action will be permanent.</color>");
             _sceneObject.SetIsSelected(true);
+            
+            _actions.AddAction("Confirm", DeleteObject);
+            _actions.AddAction("Back", () => ChangeState(new EditingObject(_sceneObject)));
         }
 
         public override void Exit()
         {
-            _ui.ObjectDeleted -= DeleteObject;
-            _ui.Canceled -= Back;
             _sceneObject.SetIsSelected(false);
+            _actions.RemoveAction("Confirm");
+            _actions.RemoveAction("Back");
         }
 
         public override void Update() { }
 
         private void DeleteObject()
         {
-            Object.Destroy(_sceneObject.gameObject);
-            _stateMachine.ChangeState<SelectingObject>();
-        }
-
-        private void Back()
-        {
-            _stateMachine.ChangeState<EditingObject>(_sceneObject);
+            var data = _sceneObject.Data;
+            Services.Get<ObjectManager>().Delete(_sceneObject);
+            ChangeState(new ProcessingObject(new DeleteSyncSoCommand(data), new Idle()));
         }
     }
 }

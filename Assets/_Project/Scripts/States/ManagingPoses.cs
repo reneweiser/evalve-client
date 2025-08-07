@@ -12,7 +12,7 @@ namespace Evalve.States
         private readonly ListPoses _listPoses;
         private string _role = "Default";
 
-        public ManagingPoses(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
+        public ManagingPoses(SceneObjects.SceneObject sceneObject)
         {
             _sceneObject = sceneObject;
             _ui = Services.Get<Ui>().Show<AddPose>();
@@ -52,12 +52,12 @@ namespace Evalve.States
         {
             var camera = Services.Get<Camera>();
             _sceneObject.AddPose(_role, camera.transform.position, camera.transform.rotation);
-            _stateMachine.ChangeState<ManagingPoses>(_sceneObject);
+            ChangeState(new ManagingPoses(_sceneObject));
         }
 
         private void Back()
         {
-            _stateMachine.ChangeState<EditingObject>(_sceneObject);
+            ChangeState(new EditingObject(_sceneObject));
         }
     }
 }

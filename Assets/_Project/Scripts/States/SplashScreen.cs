@@ -7,7 +7,7 @@ namespace Evalve.States
     {
         private readonly Panels.SplashScreen _ui;
 
-        public SplashScreen(StateMachine stateMachine) : base(stateMachine)
+        public SplashScreen()
         {
             _ui = Services.Get<Ui>().Show<Panels.SplashScreen>();
         }
@@ -26,7 +26,7 @@ namespace Evalve.States
 
         private void OnConfirmed()
         {
-            _stateMachine.ChangeState<Idle>();
+            ChangeState(new Idle());
         }
     }
 }

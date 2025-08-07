@@ -1,8 +1,9 @@
-﻿using Evalve.Panels;
-using Evalve.SceneObjects;
+﻿using Evalve.Commands;
+using Evalve.Panels;
 using Evalve.Systems;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using SceneObject = Evalve.SceneObjects.SceneObject;
 
 namespace Evalve.States
 {
@@ -13,39 +14,42 @@ namespace Evalve.States
         private readonly Info _ui;
         private readonly InputAction _cancel;
         private readonly SceneObjects.SceneObject _sceneObject;
-        private readonly Vector3 _oldPosition;
-        private readonly Quaternion _oldRotation;
         private string _text;
+        private Vector3 _oldPosition;
+        private Vector3 _oldRotation;
+        private readonly ObjectManager _objectManager;
 
-        public MovingObject(StateMachine stateMachine, SceneObjects.SceneObject sceneObject) : base(stateMachine)
+        public MovingObject(SceneObjects.SceneObject sceneObject)
         {
             _sceneObject = sceneObject;
             _input = Services.Get<InputActionAsset>()["Use"];
             _cancel = Services.Get<InputActionAsset>()["CancelUse"];
             _cursor = Services.Get<SceneCursor>();
             _ui = Services.Get<Ui>().Show<Info>();
-            _oldPosition = _sceneObject.transform.position;
-            _oldRotation = _sceneObject.transform.rotation;
             _text = "<color=#bada55>[LeftClick]</color> to confirm object position"
                 + "\n<color=#bada55>[Esc]</color> to go back";
-            
+            _objectManager = Services.Get<ObjectManager>();
         }
 
         public override void Enter()
         {
             _input.canceled += ConfirmPosition;
             _cancel.started += Back;
+            _objectManager.Updated += HandleObjectUpdate;
             
             _ui.SetTitle("Move object");
             _ui.SetLabel(_text);
             _sceneObject.SetIsSelected(true);
             _sceneObject.SetIsDragging(true);
+            _oldPosition = _sceneObject.transform.position;
+            _oldRotation = _sceneObject.transform.eulerAngles;
         }
 
         public override void Exit()
         {
             _input.canceled -= ConfirmPosition;
             _cancel.started -= Back;
+            _objectManager.Updated -= HandleObjectUpdate;
             _sceneObject.SetIsSelected(false);
             _sceneObject.SetIsDragging(false);
         }
@@ -62,16 +66,26 @@ namespace Evalve.States
             _ui.SetLabel(_text + "\n" + _sceneObject.transform.position);
         }
 
-        private void ConfirmPosition(InputAction.CallbackContext obj)
+        private async void ConfirmPosition(InputAction.CallbackContext obj)
         {
-            _stateMachine.ChangeState<EditingObject>(_sceneObject);
+            var command = new MoveSoCommand(_sceneObject,
+                _oldPosition,
+                _oldRotation,
+                _sceneObject.transform.position,
+                _sceneObject.transform.eulerAngles );
+            
+            await _commandBus.ExecuteCommand(command);
+        }
+
+        private void HandleObjectUpdate(SceneObject obj)
+        {
+            ChangeState(new ProcessingObject(new UpdateSyncSoCommand(obj), new EditingObject(obj)));
         }
 
         private void Back(InputAction.CallbackContext obj)
         {
-            _sceneObject.transform.position = _oldPosition;
-            _sceneObject.transform.rotation = _oldRotation;
-            _stateMachine.ChangeState<EditingObject>(_sceneObject);
+            _sceneObject.transform.SetPositionAndRotation(_oldRotation, Quaternion.Euler(_oldRotation));
+            ChangeState(new EditingObject(_sceneObject));
         }
     }
 }

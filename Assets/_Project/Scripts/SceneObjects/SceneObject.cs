@@ -5,6 +5,8 @@ namespace Evalve.SceneObjects
 {
     public class SceneObject : MonoBehaviour
     {
+        public Client.SceneObject Data { get; private set; }
+        
         [SerializeField] Handle _handle;
         [SerializeField] Checkpoint _checkpointPrefab;
         [SerializeField] Pose _posePrefab;
@@ -47,6 +49,11 @@ namespace Evalve.SceneObjects
         {
             _isActive = !_isActive;
             gameObject.SetActive(_isActive);
+        }
+
+        public void SetData(Client.SceneObject data)
+        {
+            Data = data;
         }
     }
 }

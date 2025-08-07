@@ -10,7 +10,7 @@ namespace Evalve.States
         private readonly InputAction _cancel;
         private readonly Info _ui;
 
-        public SelectingObject(StateMachine stateMachine) : base(stateMachine)
+        public SelectingObject()
         {
             _input = Services.Get<InputActionAsset>()["Use"];
             _cancel = Services.Get<InputActionAsset>()["CancelUse"];
@@ -38,7 +38,7 @@ namespace Evalve.States
 
         private void Back(InputAction.CallbackContext obj)
         {
-            _stateMachine.ChangeState<SelectingTool>();
+            ChangeState(new SelectingTool());
         }
     }
 }

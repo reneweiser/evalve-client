@@ -11,7 +11,6 @@ namespace Evalve.Systems
     {
         [SerializeField] private InputActionAsset _inputActions;
         [SerializeField] private SceneCursor _sceneCursor;
-        [SerializeField] private Spawner spawner;
         [SerializeField] private Ui _ui;
         [SerializeField] private Avatar _avatar;
         [SerializeField] private Camera _camera;
@@ -19,6 +18,7 @@ namespace Evalve.Systems
         [SerializeField] private UiStateMachine _uiStateMachine;
         [SerializeField] private EventSystem _eventSystem;
         [SerializeField] private AssetManager _assetManager;
+        [SerializeField] private ObjectManager _objectManager;
         
         private void Awake()
         {
@@ -27,18 +27,20 @@ namespace Evalve.Systems
             Services.Register(_eventSystem);
             Services.Register(_inputActions);
             Services.Register(_sceneCursor);
-            Services.Register(spawner);
             Services.Register(factory);
             Services.Register(_ui);
             Services.Register(_uiStateMachine);
             Services.Register(_assetManager);
-            Services.Register(new Connection("http://localhost/api/v1"));
+            Services.Register(new Connection("http://localhost/api/v1", "1|mTURpfnVVVgego7RMLyVPB2s9WI8rZ8kdI39Nszr67aa7271"));
+            Services.Register(new CommandBus());
+            Services.Register(new SceneObjectSerializer());
+            Services.Register(_objectManager);
         }
         private void Start()
         {
-            // _uiStateMachine.ChangeState<States.SelectingTool>();
+            // _uiStateMachine.ChangeState<States.Idle>();
             // _uiStateMachine.ChangeState<States.Setup>();
-            _uiStateMachine.ChangeState<States.CreateSession>();
+            _uiStateMachine.ChangeState(new States.CreateSession());
         }
 
         private void OnEnable()
