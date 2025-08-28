@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e2f4565ca04bf0a9c9dfe021c8ab26, type: 3}
+  m_Name: PrefabRegistry
+  m_EditorClassIdentifier: 
+  prefabs:
+  - id: Pose
+    prefab: {fileID: 457785131164653741, guid: f6df340cefd2dcd4ba58e8eb3e95d74b, type: 3}
+  - id: SceneObject
+    prefab: {fileID: 1160139810134332215, guid: cc7251c7843d9424c9012e0aa28b6342, type: 3}

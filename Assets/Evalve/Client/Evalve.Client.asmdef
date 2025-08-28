@@ -1,7 +1,9 @@
 {
     "name": "Evalve.Client",
     "rootNamespace": "Evalve.Client",
-    "references": [],
+    "references": [
+        "GUID:5aab7aba777f6e84db8cc1cb25f57319"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
