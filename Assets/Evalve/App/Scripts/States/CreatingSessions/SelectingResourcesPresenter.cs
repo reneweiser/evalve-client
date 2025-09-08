@@ -2,24 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using Evalve.App.Tests.Session;
+using VContainer;
 
 namespace Evalve.App.States.CreatingSessions
 {
     public class SelectingResourcesPresenter : Presenter<SelectingResourcesModel, SelectingResourcesView>
     {
+        private readonly StateMachine _stateMachine;
+        private readonly IObjectResolver _container;
         private readonly ISessionManager _sessionManager;
 
         public SelectingResourcesPresenter(
             SelectingResourcesModel model,
             SelectingResourcesView view,
+            StateMachine stateMachine,
+            IObjectResolver container,
             ISessionManager sessionManager) : base(model, view)
         {
+            _stateMachine = stateMachine;
+            _container = container;
             _sessionManager = sessionManager;
         }
 
         public override async void Initialize()
         {
-            _view.Subscribe<FormUpdated>(OnFormUpdated);
+            _view.Subscribe<ViewEvent>(OnFormUpdated);
             _view.Subscribe<FormConfirmed>(OnFormConfirmed);
             await _sessionManager.PullTeams();
             await _sessionManager.PullAssets();
@@ -28,10 +35,14 @@ namespace Evalve.App.States.CreatingSessions
             base.Initialize();
         }
 
-        private void OnFormUpdated(FormUpdated evnt)
+        private async void OnFormUpdated(ViewEvent evnt)
         {
-            switch (evnt.FieldName)
+            switch (evnt.Key)
             {
+                case "logout":
+                    await _sessionManager.Logout();
+                    _stateMachine.ChangeState(_container.Resolve<CreatingSession>());
+                    break;
                 case "team":
                     _model.SelectedTeam = evnt.Value as string;
                     break;

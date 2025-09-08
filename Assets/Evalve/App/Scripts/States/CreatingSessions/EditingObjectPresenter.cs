@@ -25,7 +25,7 @@ namespace Evalve.App.States.CreatingSessions
 
         public override void Initialize()
         {
-            _view.Subscribe<FormUpdated>(OnFormUpdated);
+            _view.Subscribe<ViewEvent>(OnFormUpdated);
             _view.Subscribe<FormConfirmed>(OnFormConfirmed);
             base.Initialize();
         }
@@ -36,12 +36,16 @@ namespace Evalve.App.States.CreatingSessions
             OnClosed();
         }
 
-        private void OnFormUpdated(FormUpdated evnt)
+        private void OnFormUpdated(ViewEvent evnt)
         {
-            switch (evnt.FieldName)
+            switch (evnt.Key)
             {
                 case "name":
                     _objectManager.RenameObject(_objectManager.GetSelectedObjectId(), evnt.Value as string);
+                    break;
+                case "update_screenshot":
+                    _container.Resolve<UpdateScreenshot>().Execute();
+                    _container.Resolve<UpdateSelectedSceneObject>().Execute();
                     break;
                 case "reset_camera":
                     _container.Resolve<ResetObjectCamera>().Execute();

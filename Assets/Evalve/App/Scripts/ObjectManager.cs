@@ -1,23 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Evalve.Client;
 using Evalve.Contracts;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Pose = Evalve.Client.Pose;
+using Transform = Evalve.Client.Transform;
 
 namespace Evalve.App
 {
     public class ObjectManager : IObjectManager
     {
         private readonly PrefabRegistry _prefabRegistry;
+        private readonly Session _session;
         private readonly Dictionary<string, SceneObjectBehaviour> _sObjects = new();
         private readonly Dictionary<string, List<SceneObjectPose>> _soProperties = new();
         private string _selectedSceneObjectId;
         private string _selectedPoseId;
 
-        public ObjectManager(PrefabRegistry prefabRegistry)
+        public ObjectManager(PrefabRegistry prefabRegistry, Session session)
         {
             _prefabRegistry = prefabRegistry;
+            _session = session;
         }
 
         public List<SceneObjectBehaviour> GetObjects()
@@ -32,6 +37,31 @@ namespace Evalve.App
             _sObjects.Add(sObject.GetId(), sObject);
             _soProperties[sObject.GetId()] = sObject.GetComponentsInChildren<SceneObjectPose>()
                 .ToList();
+        }
+
+        public SceneObjectBehaviour CreateNewObject()
+        {
+            var data = new SceneObject()
+            {
+                Id = Ulid.NewUlid().ToString(),
+                TeamId = _session.UserSelectedTeam,
+                IsDirty = true,
+                Name = "New Object",
+                Transform = new Transform()
+                {
+                    Position = new Vector(),
+                    Rotation = new Vector(),
+                },
+                Properties = new Property[]{}
+            };
+            
+            var sObject = data.ToBehaviour(_prefabRegistry).GetComponent<SceneObjectBehaviour>();
+            
+            _sObjects.Add(sObject.GetId(), sObject);
+            _soProperties[sObject.GetId()] = sObject.GetComponentsInChildren<SceneObjectPose>()
+                .ToList();
+
+            return sObject;
         }
 
         public SceneObjectBehaviour GetObject(string objectId)
@@ -159,6 +189,19 @@ namespace Evalve.App
                 .First(i => i.id == poseId);
             
             pose.role = newRole;
+        }
+
+        public void Cleanup()
+        {
+            foreach (var sObject in _sObjects)
+            {
+                Object.Destroy(sObject.Value.gameObject);
+            }
+            
+            _sObjects.Clear();
+            _soProperties.Clear();
+            _selectedSceneObjectId = null;
+            _selectedPoseId = null;
         }
     }
 }

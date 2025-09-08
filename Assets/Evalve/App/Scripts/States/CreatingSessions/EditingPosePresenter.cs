@@ -24,15 +24,15 @@ namespace Evalve.App.States.CreatingSessions
 
         public override void Initialize()
         {
-            _view.Subscribe<FormUpdated>(OnFormUpdated);
+            _view.Subscribe<ViewEvent>(OnFormUpdated);
             _view.Subscribe<FormConfirmed>(OnFormConfirmed);
             
             base.Initialize();
         }
 
-        private void OnFormUpdated(FormUpdated evnt)
+        private void OnFormUpdated(ViewEvent evnt)
         {
-            switch (evnt.FieldName)
+            switch (evnt.Key)
             {
                 case "role_changed":
                     _objectManager.SetPoseRole(_objectManager.GetSelectedObjectId(), _objectManager.GetSelectedPoseId(), evnt.Value as string);

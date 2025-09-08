@@ -291,16 +291,18 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _avatarPrefab: {fileID: 3852443456261560308, guid: 76392674cef25154cbe91da77b95deb2, type: 3}
   _sceneCursorPrefab: {fileID: 8865227059625351522, guid: d5995733b0c0f4b468b26e4d4f7f2a69, type: 3}
+  _screenshotCameraPrefab: {fileID: 2238219329167854522, guid: 1e9abbb1f975584458084a2b12b7a5b1, type: 3}
   _inputAsset: {fileID: -944628639613478452, guid: b0bcd1c7ef510c04480e82b5c1c89760, type: 3}
   _mainCamera: {fileID: 466510113}
   _prefabRegistry: {fileID: 11400000, guid: 933abb1aff3ffdb4ca3ab754773984a3, type: 2}
   _editingObjectView: {fileID: 738051640560698780, guid: eb63bc1f1fd5e424b8de1706be37a34f, type: 3}
   _movingObjectView: {fileID: 6169437128840289281, guid: 9210f50339b3f4c41adaa6bf76ee02fd, type: 3}
-  _renamingObjectView: {fileID: 5925498877396188815, guid: 1ace9b99229c2ba45a3e10dc2c693741, type: 3}
   _editingPoseView: {fileID: 4620425047572834586, guid: f163a05cee5773e4eb11ac5afd6ca58c, type: 3}
   _selectingResourcesView: {fileID: 5814745158973100801, guid: 56090f63c0fc58b438ea0f78bd16b3df, type: 3}
   _creatingSceneView: {fileID: 6232911154754121340, guid: 0817fa3fd89ef044e8a5489b4ae53a03, type: 3}
   _creatingSessionView: {fileID: 2576534152220101759, guid: 05c26d64bc3eeb14d8eb044999abb1b2, type: 3}
+  _idleView: {fileID: 609395174569082025, guid: 9d5e0486b8259654c9a8e1c5446fd67a, type: 3}
+  _baseUrl: https://projects.vreval.de/api
 --- !u!4 &1262893305
 Transform:
   m_ObjectHideFlags: 0

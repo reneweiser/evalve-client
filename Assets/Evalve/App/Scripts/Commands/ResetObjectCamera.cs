@@ -18,7 +18,7 @@ namespace Evalve.App.Commands
         public Task Execute()
         {
             var sObject = _objectManager.GetObject(_objectManager.GetSelectedObjectId());
-            _avatar.Teleport(sObject.transform.position + Vector3.back, sObject.transform.eulerAngles.y);
+            _avatar.Teleport(sObject.transform.position + new Vector3(0f, 0f, -3f), sObject.transform.eulerAngles.y);
             
             return Task.CompletedTask;
         }

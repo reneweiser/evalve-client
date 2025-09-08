@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Evalve.Contracts;
+using UnityEngine;
 
 namespace Evalve.App.Commands
 {
@@ -19,6 +20,7 @@ namespace Evalve.App.Commands
             var sObject = _objectManager.GetObject(_objectManager.GetSelectedObjectId());
             _sessionManager.UpdateObject(sObject.GetId(), sObject);
             
+            Debug.Log("Objected updated");
             return Task.CompletedTask;
         }
     }

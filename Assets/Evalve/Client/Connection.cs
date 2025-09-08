@@ -138,22 +138,49 @@ namespace Evalve.Client
         {
             var uri = $"{_baseUrl}/v1/scene-objects/{id}";
 
+            var thumbnail = await File.ReadAllBytesAsync(sceneObject.ImageUrl);
+            var path = await UploadSceneObjectThumbnail(id, thumbnail);
+            sceneObject.ImageUrl = path;
+
             using var client = new HttpClient();
 
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _authToken);
-            client.DefaultRequestHeaders.Add("Content-Type", "application/json");
             client.DefaultRequestHeaders.Add("Accept", "application/json");
 
             var body = JsonConvert.SerializeObject(sceneObject, new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize
             });
-            var response = await client.PutAsync(uri, new StringContent(body));
+            var response = await client.PutAsync(uri, new StringContent(body, Encoding.UTF8, "application/json"));
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<SceneObject>(content);
+        }
+
+        public async Task<string> UploadSceneObjectThumbnail(string id, byte[] thumbnail)
+        {
+            var uri = $"{_baseUrl}/v1/scene-objects/{id}/thumbnail";
+
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _authToken);
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            
+            using var formData = new MultipartFormDataContent();
+            var imageContent = new ByteArrayContent(thumbnail);
+            imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
+            formData.Add(imageContent, "thumbnail", $"thumbnail_{id}.png");
+            
+            var response = await client.PostAsync(uri, formData);
+            response.EnsureSuccessStatusCode();
+            
+            var responseContent = await response.Content.ReadAsStringAsync();
+            
+            var r = JsonConvert.DeserializeObject<UploadSceneObjectThumbnailSuccessResponse>(responseContent);
+
+            Debug.Log(r.Path);
+            return r.Path;
         }
 
         public async Task DeleteSceneObjectAsync(string id)

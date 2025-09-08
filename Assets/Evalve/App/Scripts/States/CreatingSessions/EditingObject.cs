@@ -58,6 +58,7 @@ namespace Evalve.App.States.CreatingSessions
 
         private void Back(InputAction.CallbackContext obj)
         {
+            _objectManager.SelectObject(null);
             _stateMachine.ChangeState(_container.Resolve<Idle>());
         }
     }

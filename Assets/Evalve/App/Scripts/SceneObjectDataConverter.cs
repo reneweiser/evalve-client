@@ -13,6 +13,7 @@ namespace Evalve.App
         public static SceneObject ToData(this SceneObjectBehaviour behaviour, SceneObject old)
         {
             old.Name = behaviour.name;
+            old.ImageUrl = behaviour.ScreenshotPath;
             
             old.Transform = new Transform()
             {

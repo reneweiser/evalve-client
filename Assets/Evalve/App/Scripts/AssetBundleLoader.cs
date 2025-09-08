@@ -7,10 +7,12 @@ namespace Evalve.App
 {
     public class AssetBundleLoader
     {
+        private readonly IAssetManager _assetManager;
         private readonly Contracts.ILogger _logger;
 
-        public AssetBundleLoader(Contracts.ILogger logger)
+        public AssetBundleLoader(IAssetManager assetManager, Contracts.ILogger logger)
         {
+            _assetManager = assetManager;
             _logger = logger;
         }
         
@@ -69,7 +71,8 @@ namespace Evalve.App
             }
 
             var loadedAsset = assetRequest.asset as GameObject;
-            Object.Instantiate(loadedAsset);
+            var obj = Object.Instantiate(loadedAsset);
+            _assetManager.Register(obj.name, obj);
             _logger.Log($"Instantiated {assetName}", Contracts.LogType.Success);
         } 
     }

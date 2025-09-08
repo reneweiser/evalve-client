@@ -15,10 +15,10 @@ namespace Evalve.App
         public string UserSelectedTeam { get; set; }
         public Dictionary<string, Team> UserTeams { get; set; }
         
-        public List<string> UserSelectedAssets { get; set; }
+        public List<string> UserSelectedAssets { get; set; } = new();
         public Dictionary<string, AssetBundle> UserAssets { get; set; }
         
-        public List<string> UserSelectedObjects { get; set; }
+        public List<string> UserSelectedObjects { get; set; } = new();
         public Dictionary<string, SceneObject> UserSceneObjects { get; set; }
         public Dictionary<string, SceneObjectBehaviour> UserSceneObjectBehaviours { get; set; }
     }

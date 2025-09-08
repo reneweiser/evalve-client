@@ -12,16 +12,20 @@ namespace Evalve.App.States.CreatingSessions
 
         public override void Initialize(SelectingResourcesModel model)
         {
+            var logout = _panel.Add<Button>("Logout");
+            logout.Clicked += () => Raise(new ViewEvent {Key = "logout"});
+            
+            _panel.Add<Header>("Resources");
             _team = _panel.Add<Select>("Team");
             _assets = _panel.Add<MultiSelect>("Assets");
             _assets.AllowMultipleSelections = true;
             _objects = _panel.Add<MultiSelect>("Objects");
             _objects.AllowMultipleSelections = true;
-            _submit = _panel.Add<Submit>("Confirm");
+            _submit = _panel.Add<Submit>("Load Scene");
             
-            _team.InputChanged += value => Raise(new FormUpdated { FieldName = "team", Value = value });
-            _assets.InputChanged += value => Raise(new FormUpdated { FieldName = "assets", Value = value });
-            _objects.InputChanged += value => Raise(new FormUpdated { FieldName = "objects", Value = value });
+            _team.InputChanged += value => Raise(new ViewEvent { Key = "team", Value = value });
+            _assets.InputChanged += value => Raise(new ViewEvent { Key = "assets", Value = value });
+            _objects.InputChanged += value => Raise(new ViewEvent { Key = "objects", Value = value });
             _submit.Clicked += () => Raise(new FormConfirmed());
             
             _team.SetOptions(model.Teams);

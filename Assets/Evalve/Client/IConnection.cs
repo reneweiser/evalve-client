@@ -13,6 +13,7 @@ namespace Evalve.Client
         Task<SceneObject> GetSceneObjectAsync(string id);
         Task<SceneObject> CreateSceneObjectAsync(SceneObject sceneObject);
         Task<SceneObject> UpdateSceneObjectAsync(string id, SceneObject sceneObject);
+        Task<string> UploadSceneObjectThumbnail(string id, byte[] thumbnail);
         Task DeleteSceneObjectAsync(string id);
         Task<AssetBundle> GetAssetBundleAsync(string id);
         Task<List<AssetBundle>> GetAssetBundlesAsync();

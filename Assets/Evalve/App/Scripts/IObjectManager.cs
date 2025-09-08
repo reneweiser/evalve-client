@@ -8,6 +8,7 @@ namespace Evalve.App
     {
         List<SceneObjectBehaviour> GetObjects();
         void CreateObject(SceneObject sceneObject);
+        SceneObjectBehaviour CreateNewObject();
         SceneObjectBehaviour GetObject(string objectId);
         void DeleteObject(string objectId);
         void RenameObject(string objectId, string newName);
@@ -24,5 +25,6 @@ namespace Evalve.App
         string GetSelectedPoseId();
         void MovePoseAt(string sObjectId, string poseId, Vector3 position, Vector3 rotation);
         void SetPoseRole(string objectId, string poseId, string newRole);
+        void Cleanup();
     }
 }

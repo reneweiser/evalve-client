@@ -14,6 +14,7 @@ namespace Evalve.App
         [SerializeField] private Material _selected;
         
         private string _id;
+        public string ScreenshotPath { get; set; }
 
         public void SetId(string id) => _id = id;
 

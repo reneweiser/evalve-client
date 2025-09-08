@@ -10,6 +10,8 @@ namespace Evalve.Client
         public string TeamId;
         [JsonProperty("name")]
         public string Name;
+        [JsonProperty("imageUrl")]
+        public string ImageUrl;
         [JsonProperty("transform")]
         public Transform Transform;
         [JsonProperty("properties")]

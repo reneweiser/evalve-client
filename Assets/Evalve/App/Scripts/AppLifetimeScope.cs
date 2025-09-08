@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Evalve.App.States;
 using Evalve.App.States.CreatingSessions;
 using Evalve.Client;
 using Evalve.Contracts;
@@ -17,6 +18,7 @@ namespace Evalve.App
         [Space]
         [SerializeField] private Avatar _avatarPrefab;
         [SerializeField] private SceneCursor _sceneCursorPrefab;
+        [SerializeField] private ScreenshotCamera _screenshotCameraPrefab;
         
         [Space]
         [SerializeField] private InputActionAsset _inputAsset;
@@ -31,6 +33,10 @@ namespace Evalve.App
         [SerializeField] private SelectingResourcesView _selectingResourcesView;
         [SerializeField] private CreatingSceneView _creatingSceneView;
         [SerializeField] private CreatingSessionView _creatingSessionView;
+        [SerializeField] private IdleView _idleView;
+
+        [Space] [Header("Views")] [SerializeField]
+        private string _baseUrl;
         
         protected override void Configure(IContainerBuilder builder)
         {
@@ -46,6 +52,7 @@ namespace Evalve.App
             builder.RegisterComponentInNewPrefab(_editingObjectView, Lifetime.Transient);
             builder.RegisterComponentInNewPrefab(_movingObjectView, Lifetime.Transient);
             builder.RegisterComponentInNewPrefab(_editingPoseView, Lifetime.Transient);
+            builder.RegisterComponentInNewPrefab(_idleView, Lifetime.Transient);
             
             builder.Register<CreatingSessionPresenter>(Lifetime.Transient);
             builder.Register<SelectingResourcesPresenter>(Lifetime.Transient);
@@ -53,18 +60,21 @@ namespace Evalve.App
             builder.Register<EditingObjectPresenter>(Lifetime.Transient);
             builder.Register<MovingObjectPresenter>(Lifetime.Transient);
             builder.Register<EditingPosePresenter>(Lifetime.Transient);
+            builder.Register<IdlePresenter>(Lifetime.Transient);
             
             builder.RegisterComponentInNewPrefab(_avatarPrefab, Lifetime.Scoped);
             builder.RegisterComponentInNewPrefab(_sceneCursorPrefab, Lifetime.Scoped);
+            builder.RegisterComponentInNewPrefab(_screenshotCameraPrefab, Lifetime.Singleton);
             
             builder.Register<StateMachine>(Lifetime.Singleton);
             builder.Register<Session>(Lifetime.Singleton);
             builder.Register<IObjectManager, ObjectManager>(Lifetime.Singleton);
             builder.Register<ISessionManager, SessionManager>(Lifetime.Singleton);
+            builder.Register<IAssetManager, AssetManager>(Lifetime.Singleton);
             builder.Register<AssetBundleLoader>(Lifetime.Singleton);
             builder.Register<ILogger, EvalveLogger>(Lifetime.Singleton);
             
-            builder.Register<IConnection, Connection>(Lifetime.Singleton).WithParameter("baseUrl", "http://localhost/api");
+            builder.Register<IConnection, Connection>(Lifetime.Singleton).WithParameter("baseUrl", _baseUrl);
             
             builder.RegisterComponentInHierarchy<EventSystem>();
             

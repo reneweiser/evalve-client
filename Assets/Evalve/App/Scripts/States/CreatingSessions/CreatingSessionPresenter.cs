@@ -26,7 +26,8 @@ namespace Evalve.App.States.CreatingSessions
             _model.FormStatus = FormStatus.Invalid;
             _model.Email = "test@example.com";
             _model.Password = "password";
-            _view.Subscribe<FormUpdated>(OnFormUpdated);
+            
+            _view.Subscribe<ViewEvent>(OnFormUpdated);
             _view.Subscribe<FormConfirmed>(OnFormConfirmed);
             
             base.Initialize();
@@ -52,9 +53,9 @@ namespace Evalve.App.States.CreatingSessions
             }
         }
 
-        private void OnFormUpdated(FormUpdated evnt)
+        private void OnFormUpdated(ViewEvent evnt)
         {
-            switch (evnt.FieldName)
+            switch (evnt.Key)
             {
                 case "email":
                     _model.Email = evnt.Value as string;

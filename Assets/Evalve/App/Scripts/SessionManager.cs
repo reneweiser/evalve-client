@@ -61,6 +61,14 @@ namespace Evalve.App
             _session.UserSceneObjects = objects.ToDictionary(i => i.Id, i => i);
         }
 
+        public async Task PushObjects()
+        {
+            var operations = _session.UserSceneObjects.Values
+                .Where(i => i.IsDirty)
+                .Select(i => _connection.UpdateSceneObjectAsync(i.Id, i));
+            await Task.WhenAll(operations);
+        }
+
         public void SelectTeam(string id)
         {
             if (_session == null)

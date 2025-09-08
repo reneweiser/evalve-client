@@ -7,4 +7,14 @@ namespace Evalve.Client
         [JsonProperty("message")]
         public string Message;
     }
+
+    public class UploadSceneObjectThumbnailSuccessResponse
+    {
+        [JsonProperty("path")]
+        public string Path;
+        [JsonProperty("message")]
+        public string Message;
+        [JsonProperty("url")]
+        public string Url;
+    }
 }

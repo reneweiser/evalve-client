@@ -22,9 +22,9 @@ namespace Evalve.App.States.CreatingSessions
             _email.SetType(TextInputType.Email);
             _password.SetType(TextInputType.Password);
 
-            _email.InputChanged += value => Raise(new FormUpdated { FieldName = "email", Value = value });
-            _password.InputChanged += value => Raise(new FormUpdated { FieldName = "password", Value = value });
-            _rememberMe.InputChanged += value => Raise(new FormUpdated { FieldName = "remember_me", Value = value.ToString() });
+            _email.InputChanged += value => Raise(new ViewEvent { Key = "email", Value = value });
+            _password.InputChanged += value => Raise(new ViewEvent { Key = "password", Value = value });
+            _rememberMe.InputChanged += value => Raise(new ViewEvent { Key = "remember_me", Value = value.ToString() });
             _confirm.Clicked += () => Raise(new FormConfirmed());
         }
 

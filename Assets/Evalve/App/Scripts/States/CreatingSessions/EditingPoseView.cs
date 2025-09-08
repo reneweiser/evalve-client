@@ -20,13 +20,13 @@ namespace Evalve.App.States.CreatingSessions
             _role.SetOptions(model.Roles);
             _role.SetValue(model.SelectedRole);
             
-            _role.InputChanged += role => Raise(new FormUpdated { FieldName = "role_changed", Value = role });
+            _role.InputChanged += role => Raise(new ViewEvent { Key = "role_changed", Value = role });
             
             var move = _panel.Add<Button>("Move pose here");
-            move.Clicked += () => Raise(new FormUpdated { FieldName = "move_pose_here", Value = null });
+            move.Clicked += () => Raise(new ViewEvent { Key = "move_pose_here", Value = null });
             
             var toPose = _panel.Add<Button>("Move to pose");
-            toPose.Clicked += () => Raise(new FormUpdated { FieldName = "move_to_pose", Value = null });
+            toPose.Clicked += () => Raise(new ViewEvent { Key = "move_to_pose", Value = null });
             
             var delete = _panel.Add<Button>("Delete");
             delete.Clicked += () => EnableTab("delete");
@@ -40,7 +40,7 @@ namespace Evalve.App.States.CreatingSessions
             deleteCancel.Clicked += () => EnableTab("default");
             
             var deleteConfirm = _panel.Add<Button>("Yes");
-            deleteConfirm.Clicked += () => Raise(new FormUpdated { FieldName = "deleted", Value = null });
+            deleteConfirm.Clicked += () => Raise(new ViewEvent { Key = "deleted", Value = null });
 
             _tabs = new Dictionary<string, List<Element>>()
             {
