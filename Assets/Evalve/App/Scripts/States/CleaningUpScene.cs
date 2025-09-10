@@ -38,6 +38,7 @@ namespace Evalve.App.States
         public async void Enter()
         {
             _camera.gameObject.SetActive(true);
+            _avatar.Teleport(Vector3.zero, 0f);
             _avatar.gameObject.SetActive(false);
             _assetManager.Cleanup();
             _objectManager.Cleanup();
