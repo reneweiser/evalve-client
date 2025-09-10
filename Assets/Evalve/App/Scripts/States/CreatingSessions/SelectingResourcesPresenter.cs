@@ -29,6 +29,7 @@ namespace Evalve.App.States.CreatingSessions
             _view.Subscribe<ViewEvent>(OnFormUpdated);
             _view.Subscribe<FormConfirmed>(OnFormConfirmed);
             await _sessionManager.PullTeams();
+            _sessionManager.SelectTeam();
             await _sessionManager.PullAssets();
             await _sessionManager.PullObjects();
             
@@ -45,6 +46,9 @@ namespace Evalve.App.States.CreatingSessions
                     break;
                 case "team":
                     _model.SelectedTeam = evnt.Value as string;
+                    await _sessionManager.PullAssets();
+                    await _sessionManager.PullObjects();
+                    Refresh();
                     break;
                 case "assets":
                     _model.SelectedAssets = evnt.Value as List<string>;

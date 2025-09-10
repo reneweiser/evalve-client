@@ -46,10 +46,10 @@ namespace Evalve.App.Tests.Session
             if (Session.UserSelectedTeam == null)
                 throw new Exception("User must select a team");
 
-            Session.UserAssets = (await _connection.GetAssetBundlesAsync())
+            Session.UserAssets = (await _connection.GetAssetBundlesByTeamAsync(Session.UserSelectedTeam))
                 .ToDictionary(item => item.Id, item => item);
             
-            Session.UserSceneObjects = (await _connection.GetSceneObjectsAsync())
+            Session.UserSceneObjects = (await _connection.GetSceneObjectsByTeamAsync(Session.UserSelectedTeam))
                 .ToDictionary(item => item.Id, item => item);
         }
 

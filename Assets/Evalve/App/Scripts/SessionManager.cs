@@ -51,13 +51,13 @@ namespace Evalve.App
 
         public async Task PullAssets()
         {
-            var assetBundles = await _connection.GetAssetBundlesAsync();
+            var assetBundles = await _connection.GetAssetBundlesByTeamAsync(_session.UserSelectedTeam);
             _session.UserAssets = assetBundles.ToDictionary(i => i.Id, i => i);
         }
 
         public async Task PullObjects()
         {
-            var objects = await _connection.GetSceneObjectsAsync();
+            var objects = await _connection.GetSceneObjectsByTeamAsync(_session.UserSelectedTeam);
             _session.UserSceneObjects = objects.ToDictionary(i => i.Id, i => i);
         }
 
@@ -69,10 +69,16 @@ namespace Evalve.App
             await Task.WhenAll(operations);
         }
 
-        public void SelectTeam(string id)
+        public void SelectTeam(string id = null)
         {
             if (_session == null)
                 throw new Exception("User must be logged in");
+
+            if (id == null && _session.UserTeams.Keys.Count > 0)
+            {
+                _session.UserSelectedTeam = _session.UserTeams.Keys.First();
+                return;
+            }
             
             _session.UserSelectedTeam = id;
         }

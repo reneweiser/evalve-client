@@ -12,6 +12,12 @@ namespace Evalve.App.States.CreatingSessions
 
         public override void Initialize(SelectingResourcesModel model)
         {
+            Refresh(model);
+        }
+
+        public override void Refresh(SelectingResourcesModel model)
+        {
+            _panel.Clear();
             var logout = _panel.Add<Button>("Logout");
             logout.Clicked += () => Raise(new ViewEvent {Key = "logout"});
             
@@ -29,6 +35,7 @@ namespace Evalve.App.States.CreatingSessions
             _submit.Clicked += () => Raise(new FormConfirmed());
             
             _team.SetOptions(model.Teams);
+            _team.SetValue(model.SelectedTeam);
             _assets.SetOptions(model.Assets);
             _objects.SetOptions(model.Objects);
         }

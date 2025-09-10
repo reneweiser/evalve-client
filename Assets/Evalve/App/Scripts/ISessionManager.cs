@@ -15,7 +15,7 @@ namespace Evalve.App
         Task PullAssets();
         Task PullObjects();
         Task PushObjects();
-        void SelectTeam(string id);
+        void SelectTeam(string id = null);
         Team GetTeam(string id);
         void SelectAssets(List<string> assetIds);
         void SelectObjects(List<string> objectIds);

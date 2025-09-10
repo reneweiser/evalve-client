@@ -78,9 +78,9 @@ namespace Evalve.Client
             return JsonConvert.DeserializeObject<List<Team>>(content);
         }
         
-        public async Task<List<SceneObject>> GetSceneObjectsAsync()
+        public async Task<List<SceneObject>> GetSceneObjectsByTeamAsync(string teamId)
         {
-            var uri = $"{_baseUrl}/v1/scene-objects";
+            var uri = $"{_baseUrl}/v1/teams/{teamId}/scene-objects";
 
             using var client = new HttpClient();
 
@@ -212,9 +212,9 @@ namespace Evalve.Client
             return JsonConvert.DeserializeObject<AssetBundle>(content);
         }
 
-        public async Task<List<AssetBundle>> GetAssetBundlesAsync()
+        public async Task<List<AssetBundle>> GetAssetBundlesByTeamAsync(string teamId)
         {
-            var uri = $"{_baseUrl}/v1/asset-bundles";
+            var uri = $"{_baseUrl}/v1/teams/{teamId}/asset-bundles";
 
             using var client = new HttpClient();
 
