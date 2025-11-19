@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Evalve.Client;
 using UnityEngine;
@@ -21,6 +22,9 @@ namespace Evalve.App
                 Rotation = behaviour.transform.rotation.eulerAngles.ToVector(),
             };
 
+            var properties = behaviour.GetComponentsInChildren<SceneObjectProperty>()
+                .Select(sceneObjectProperty => sceneObjectProperty.GetProperty());
+
             old.Properties = behaviour.GetComponentsInChildren<SceneObjectPose>()
                 .Select(sceneObjectPose => (Property)(new Pose()
                 {
@@ -28,6 +32,7 @@ namespace Evalve.App
                     Position = sceneObjectPose.transform.position.ToVector(),
                     Rotation = sceneObjectPose.transform.rotation.eulerAngles.ToVector(),
                 }))
+                .Concat(properties)
                 .ToArray();
             
             old.IsDirty = true;
@@ -66,8 +71,15 @@ namespace Evalve.App
             {
                 Pose pose => CreatePose(registry, pose),
                 Checkpoint checkpoint => CreateCheckpoint(registry, checkpoint),
-                _ => throw new Exception()
+                _ => CreateSceneObjectProperty(registry, property)
             };
+        }
+
+        private static GameObject CreateSceneObjectProperty(PrefabRegistry registry, Property property)
+        {
+            var sceneObjectProperty = Object.Instantiate(registry.GetPrefab("SceneObjectProperty"));
+            sceneObjectProperty.GetComponent<SceneObjectProperty>().SetProperty(property);
+            return sceneObjectProperty;
         }
 
         private static GameObject CreateCheckpoint(PrefabRegistry registry, Checkpoint checkpoint)

@@ -292,6 +292,7 @@ MonoBehaviour:
   _avatarPrefab: {fileID: 3852443456261560308, guid: 76392674cef25154cbe91da77b95deb2, type: 3}
   _sceneCursorPrefab: {fileID: 8865227059625351522, guid: d5995733b0c0f4b468b26e4d4f7f2a69, type: 3}
   _screenshotCameraPrefab: {fileID: 2238219329167854522, guid: 1e9abbb1f975584458084a2b12b7a5b1, type: 3}
+  _notificationsPrefab: {fileID: 2942255492720899412, guid: 63bdb6ba0af8a754caaf7881f699091a, type: 3}
   _inputAsset: {fileID: -944628639613478452, guid: b0bcd1c7ef510c04480e82b5c1c89760, type: 3}
   _mainCamera: {fileID: 466510113}
   _prefabRegistry: {fileID: 11400000, guid: 933abb1aff3ffdb4ca3ab754773984a3, type: 2}

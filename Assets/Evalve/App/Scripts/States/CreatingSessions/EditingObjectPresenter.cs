@@ -1,4 +1,5 @@
 ﻿using Evalve.App.Commands;
+using Evalve.App.Ui.Elements;
 using VContainer;
 
 namespace Evalve.App.States.CreatingSessions
@@ -7,17 +8,20 @@ namespace Evalve.App.States.CreatingSessions
     {
         private readonly IObjectResolver _container;
         private readonly StateMachine _stateMachine;
+        private readonly Notifications _notifications;
         private readonly IObjectManager _objectManager;
         private readonly string _selectedObjectId;
 
         public EditingObjectPresenter(EditingObjectModel model,
             EditingObjectView view,
             StateMachine stateMachine,
+            Notifications notifications,
             IObjectResolver container,
             IObjectManager objectManager) : base(model, view)
         {
             _container = container;
             _stateMachine = stateMachine;
+            _notifications = notifications;
             _objectManager = objectManager;
             
             _selectedObjectId = objectManager.GetSelectedObjectId();
@@ -46,6 +50,7 @@ namespace Evalve.App.States.CreatingSessions
                 case "update_screenshot":
                     _container.Resolve<UpdateScreenshot>().Execute();
                     _container.Resolve<UpdateSelectedSceneObject>().Execute();
+                    _notifications.AddNotification("Screenshot updated");
                     break;
                 case "reset_camera":
                     _container.Resolve<ResetObjectCamera>().Execute();

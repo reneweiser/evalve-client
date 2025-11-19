@@ -17,7 +17,12 @@ namespace Evalve.Client
                 "body" => new Body(),
                 "checkpoint" => new Checkpoint(),
                 "pose" => new Pose(),
-                _ => throw new JsonSerializationException($"Unknown property type: {type}")
+                "pollingField" => new PollingField(),
+                "cgData" => new CgData(),
+                "models" => new Models(),
+                "notes" => new Notes(),
+                "question" => new Question(),
+                _ => throw new Exception($"Unknown type: {type}")
             };
 
             serializer.Populate(obj["data"]?.CreateReader()!, property);

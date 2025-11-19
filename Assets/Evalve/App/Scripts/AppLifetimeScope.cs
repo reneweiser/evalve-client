@@ -2,6 +2,7 @@
 using System.Linq;
 using Evalve.App.States;
 using Evalve.App.States.CreatingSessions;
+using Evalve.App.Ui.Elements;
 using Evalve.Client;
 using Evalve.Contracts;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace Evalve.App
         [SerializeField] private Avatar _avatarPrefab;
         [SerializeField] private SceneCursor _sceneCursorPrefab;
         [SerializeField] private ScreenshotCamera _screenshotCameraPrefab;
+        [SerializeField] private Notifications _notificationsPrefab;
         
         [Space]
         [SerializeField] private InputActionAsset _inputAsset;
@@ -65,6 +67,7 @@ namespace Evalve.App
             builder.RegisterComponentInNewPrefab(_avatarPrefab, Lifetime.Scoped);
             builder.RegisterComponentInNewPrefab(_sceneCursorPrefab, Lifetime.Scoped);
             builder.RegisterComponentInNewPrefab(_screenshotCameraPrefab, Lifetime.Singleton);
+            builder.RegisterComponentInNewPrefab(_notificationsPrefab, Lifetime.Singleton);
             
             builder.Register<StateMachine>(Lifetime.Singleton);
             builder.Register<Session>(Lifetime.Singleton);

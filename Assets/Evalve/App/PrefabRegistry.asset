@@ -17,3 +17,5 @@ MonoBehaviour:
     prefab: {fileID: 457785131164653741, guid: f6df340cefd2dcd4ba58e8eb3e95d74b, type: 3}
   - id: SceneObject
     prefab: {fileID: 1160139810134332215, guid: cc7251c7843d9424c9012e0aa28b6342, type: 3}
+  - id: SceneObjectProperty
+    prefab: {fileID: 1750097155662655095, guid: cf2c2cda371308a47bcf6378fbc5e5de, type: 3}

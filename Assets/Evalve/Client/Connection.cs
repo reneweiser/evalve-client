@@ -138,9 +138,16 @@ namespace Evalve.Client
         {
             var uri = $"{_baseUrl}/v1/scene-objects/{id}";
 
-            var thumbnail = await File.ReadAllBytesAsync(sceneObject.ImageUrl);
-            var path = await UploadSceneObjectThumbnail(id, thumbnail);
-            sceneObject.ImageUrl = path;
+            if (File.Exists(sceneObject.ImageUrl))
+            {
+                var thumbnail = await File.ReadAllBytesAsync(sceneObject.ImageUrl);
+                var path = await UploadSceneObjectThumbnail(id, thumbnail);
+                sceneObject.ImageUrl = path;
+            }
+            else
+            {
+                sceneObject.ImageUrl = null;
+            }
 
             using var client = new HttpClient();
 
@@ -172,6 +179,7 @@ namespace Evalve.Client
             imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
             formData.Add(imageContent, "thumbnail", $"thumbnail_{id}.png");
             
+            Debug.Log($"Uploading thumbnail to \"{uri}\".");
             var response = await client.PostAsync(uri, formData);
             response.EnsureSuccessStatusCode();
             

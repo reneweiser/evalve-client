@@ -44,7 +44,7 @@ namespace Evalve.App.States.CreatingSessions
             _input["Use"].canceled -= ConfirmPosition;
             
             _objectManager.StopDragObject(_objectManager.GetSelectedObjectId());
-            _container.Resolve<UpdateSelectedSceneObject>();
+            _container.Resolve<UpdateSelectedSceneObject>().Execute();
             
             _presenter.Cleanup();
         }
